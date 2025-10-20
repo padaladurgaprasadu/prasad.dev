@@ -1,0 +1,534 @@
+about, skills, projects these three sections are appearing and merge /* ================= General Dark Theme ================= */
+* {
+  box-sizing: border-box; /* ensures padding/borders don't cause overflow */
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #121212;
+  color: #f2f3f6;
+  overflow-x: hidden; /* prevents horizontal scrolling */
+}
+
+a {
+  text-decoration: none;
+  color: #eaefed;
+  transition: 0.3s;
+}
+
+a:hover {
+  color: #13c8b3;
+}
+
+/* ================= Top Navbar ================= */
+.top-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 50px; /* Reduced height */
+  padding: 5px 25px; /* Slimmer padding */
+  background-color: #1f1f1f;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.top-navbar .logo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.top-navbar .logo img {
+  width: 26px; /* Smaller logo */
+  border-radius: 50%;
+}
+
+.top-navbar .nav-links a {
+  margin: 0 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.top-navbar .nav-links a:hover {
+  color: #00ffff;
+  transition: color 0.3s ease;
+}
+
+
+/* ================= Hero Section ================= */
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 80px 50px;
+  min-height: 100vh;
+}
+
+.hero-left {
+  flex: 1;
+}
+
+/* Hero Text Animations */
+.hero-left h1 {
+  font-size: 3em;
+  color: #e2ebeb;
+  max-width: 550px;
+  margin-bottom: 20px;
+  opacity: 0;
+  transform: translateX(-50px);
+  animation: slideFadeIn 1s forwards 0.2s;
+}
+
+.hero-left p {
+  font-size: 1.35em;
+  line-height: 1.5;
+  max-width: 550px;
+  color: #cccccc;
+  opacity: 0;
+  transform: translateX(-50px);
+  animation: slideFadeIn 1s forwards 0.6s;
+}
+
+/* Hero Buttons Container */
+.hero-buttons {
+  display: flex;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+/* Hero Buttons */
+.hero-left .btn {
+  padding: 12px 25px;
+  font-size: 1em;
+  border-radius: 25px;
+  font-weight: bold;
+  border: 2px solid #00ffff;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.work-btn {
+  background-color: #00ffff;
+  color: #121212;
+}
+
+.resume-btn {
+  background-color: #5c7c7c;
+  color: #121212;
+}
+
+.hero-left .btn:hover {
+  background-color: #5c7c7c;
+  color: #121212;
+  box-shadow: none;
+  border-color: #00ffff;
+}
+
+/* Slide + Fade Animation */
+@keyframes slideFadeIn {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Hero Image with Glow */
+.hero-right {
+  position: relative;
+  width: 350px;
+  height: 350px;
+}
+
+.hero-right img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 40px #00ffff, 0 0 60px #00ffff inset;
+  position: relative;
+  z-index: 2;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hero-right img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 60px #00ffff, 0 0 80px #00ffff inset;
+}
+
+.hero-right::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: calc(100% - 4px);
+  height: calc(100% - 4px);
+  border-radius: 50%;
+  border: 2px solid #00ffff;
+  box-shadow: 0 0 5px #00ffff;
+  transform: translate(-50%, -50%);
+  animation: rotateLaser 3s linear infinite;
+  z-index: 1;
+  pointer-events: none;
+}
+
+@keyframes rotateLaser {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* ================= About Section ================= */
+.about-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 50px;
+  flex-wrap: wrap;
+  margin-top: 50px;
+}
+
+.about-image {
+  flex: 1 1 200px;
+  max-width: 300px;
+}
+
+.about-image img {
+  width: 100%;
+  border-radius: 20px;
+  object-fit: cover;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transform: translateY(80px); /* ⬇️ Moves the image slightly down */
+}
+
+.about-image img:hover {
+  transform: translateY(15px) scale(1.05) rotate(2deg);
+  box-shadow: 0 0 50px #00ffff, 0 0 80px #00ffff inset;
+}
+
+.about-text {
+  flex: 2 1 400px;
+}
+
+.about-text h2 {
+  font-size: 2em;
+  color: #00ffff;
+  margin-bottom: 15px;
+}
+
+.about-text p, .about-text ul {
+  font-size: 1em;
+  color: #cccccc;
+  line-height: 1.5;
+}
+
+.about-text ul {
+  margin-left: 18px;
+  margin-bottom: 12px;
+}
+
+.about-text li {
+  margin-bottom: 6px;
+}
+
+/* ================= Skills Section ================= */
+#skills {
+  padding: 100px 50px 200px; /* increased overall section height with extra bottom padding */
+  background-color: #181818;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* center all content horizontally */
+}
+
+/* Skills Headers */
+.skills-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.skills-header h2 {
+  font-size: 2.5em;
+  color: #00ffff;
+  margin-bottom: 10px;
+}
+
+.skills-tagline {
+  font-size: 1.2em;
+  color: #cccccc;
+  font-weight: 400;
+  text-align: center;
+  margin-bottom: 40px; /* space below tagline before skills line */
+}
+
+/* Skills Line */
+.skills-line {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  perspective: 1000px;
+  flex-wrap: wrap;
+}
+
+/* Individual Skill */
+.skill {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+  width: 150px; /* width reduced */
+  background-color: #1f1f1f;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+              box-shadow 0.5s ease;
+  transform-style: preserve-3d;
+}
+
+/* Skill Logo */
+.skill-logo {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid #00ffff;
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+
+/* Hover: Pop-Out Effect */
+.skill:hover {
+  transform: scale(1.35) translateY(-15px) rotateX(5deg) rotateZ(2deg);
+  box-shadow: 0 25px 50px rgba(0, 255, 255, 0.6);
+  z-index: 10;
+}
+
+.skill:hover .skill-logo {
+  transform: scale(1.25) rotateZ(-5deg);
+  box-shadow: 0 15px 30px rgba(0, 255, 255, 0.5);
+}
+
+/* ================= Projects Section ================= */
+#projects {
+  padding: 70px 50px 100px; /* reduced overall section height */
+  background-color: #181818;
+  text-align: center; /* center the heading and tagline */
+}
+
+/* Projects Header */
+.projects-header {
+  text-align: center;
+  margin-bottom: 30px; /* reduced space below heading */
+}
+
+.projects-header h2 {
+  font-size: 2.2em; /* slightly smaller heading */
+  color: #00ffff;
+  margin-bottom: 8px;
+}
+
+.projects-header p {
+  font-size: 1.1em; /* slightly smaller tagline */
+  color: #cccccc;
+  margin-bottom: 20px;
+}
+
+/* Projects Container */
+.projects-container {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  scroll-behavior: smooth;
+}
+
+/* Individual Project Card */
+.project-card {
+  background-color: #1f1f1f;
+  padding: 10px; /* reduced padding */
+  border-radius: 15px;
+  flex: 0 0 180px; /* reduced width */
+  max-width: 180px;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  text-align: center;
+  cursor: pointer;
+}
+
+/* ================= Project Card Pop-Out ================= */
+.project-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+}
+
+.project-card.expanded {
+    transform: scale(1.05);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    z-index: 10;
+}
+
+/* Optional: Add extra space for expanded details */
+.project-card.expanded p,
+.project-card.expanded h3 {
+    font-weight: 600;
+}
+
+
+/* Hover Effect */
+.project-card:hover {
+  transform: scale(1.1) translateY(-8px); /* smaller hover movement */
+  box-shadow: 0 15px 30px rgba(0, 255, 255, 0.5);
+}
+
+/* Project Images - Equal Size */
+.project-card img {
+  width: 160px; /* reduced width */
+  height: 100px; /* reduced height */
+  object-fit: cover; /* ensures image fills container without distortion */
+  border-radius: 12px; /* slightly smaller radius */
+  margin-top: 8px; /* reduced margin */
+  box-shadow: 0 8px 20px rgba(0, 255, 255, 0.2);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.project-card img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 25px rgba(0, 255, 255, 0.4);
+}
+
+/* Scrollbar for projects */
+.projects-container::-webkit-scrollbar {
+  height: 5px;
+}
+
+.projects-container::-webkit-scrollbar-thumb {
+  background-color: #00ffff;
+  border-radius: 3px;
+}
+
+
+/* ================= Contact Section ================= */
+.contact {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  background-color: #0a0a0a;
+  color: #e2ebeb;
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.contact h2 {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  color: #00ffff;
+}
+
+.contact p {
+  font-size: 1.2em;
+  margin-bottom: 15px;
+  line-height: 1.5;
+  max-width: 600px;
+}
+
+.contact a {
+  color: #00ffff;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.contact a:hover {
+  color: #5c7c7c;
+}
+
+/* ================= Footer ================= */
+footer {
+  text-align: center;
+  padding: 30px;
+  background-color: #1f1f1f;
+  color: #888;
+}
+
+/* Scroll-to-top Button - Simple Hover Effect */
+.footer-scroll-top {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15px;
+  width: 40px;
+  height: 40px;
+  background-color: #00ffff;
+  border-radius: 50%;
+  color: #121212;
+  font-size: 1.5em;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.footer-scroll-top:hover {
+  background-color: #5c7c7c;
+  transform: translateY(-2px); /* subtle lift */
+}
+
+/* ================= Section Styling ================= */
+.section {
+  padding: 70px 50px;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.section h2 {
+  font-size: 2.5em;
+  margin-bottom: 30px;
+  color: #00ffff;
+}
+
+/* ================= Responsive Adjustments ================= */
+@media (max-width: 1024px) {
+  .hero {
+    flex-direction: column-reverse;
+    align-items: center;
+    padding: 50px 20px;
+  }
+
+  .hero-right {
+    width: 300px;
+    height: 300px;
+    margin-bottom: 30px;
+  }
+
+  .about-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .skills-line {
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-left h1 {
+    font-size: 2.2em;
+  }
+
+  .hero-left p {
+    font-size: 1.1em;
+  }
+
+  .projects-container {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
+}
