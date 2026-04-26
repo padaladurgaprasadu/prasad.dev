@@ -1,162 +1,679 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Portfolio of Durga Prasadu Padala — AI/ML Developer, Android & Web Developer." />
-  <meta name="author" content="Durga Prasadu Padala" />
-  <title>Prasad Padala | Portfolio</title>
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="style.css" />
-
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Padala Durga Prasadu — AI/ML Engineer, BCI Researcher, B.Tech CSE (AI/ML) graduate pursuing MS in Germany.">
+  <meta name="author" content="Padala Durga Prasadu">
+  <meta property="og:title" content="Padala Durga Prasadu — AI/ML Engineer &amp; BCI Researcher">
+  <meta property="og:description" content="Building brain-computer interfaces &amp; intelligent systems. IEEE Published. Pursuing MS in Germany.">
+  <meta property="og:image" content="image.jpeg">
+  <title>Padala Durga Prasadu — AI/ML Engineer &amp; BCI Researcher</title>
 
   <!-- Favicon -->
-  <link rel="icon" href="favicon.jpg" type="image/jpg" />
+  <link rel="icon" href="favicon.jpg" type="image/jpg">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
 </head>
-<body id="top">
-  <!-- Navbar -->
-  <header class="top-navbar">
-    <div class="logo">
-      <img src="logo.jpg" alt="DP Logo" />
-      <h1>DP</h1>
+<body>
+
+  <!-- CURSOR -->
+  <div id="cur"></div>
+  <div id="cur-r"></div>
+
+  <!-- ============================================================
+       NAVIGATION
+       ============================================================ -->
+  <nav id="nav">
+    <a href="#hero" class="nav-logo">
+      <img src="logo.jpg" alt="DP Logo" class="nav-logo-img">
+      <span>D<span class="accent-dot">.</span>P</span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#leetcode">LeetCode</a></li>
+      <li><a href="#certifications">Certs</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+
+    <!-- Social icons in nav -->
+    <div class="nav-right">
+      <a href="https://github.com/padaladurgaprasadu" target="_blank" rel="noopener" class="nav-social" aria-label="GitHub">
+        <i class="fab fa-github"></i>
+      </a>
+      <a href="https://in.linkedin.com/in/prasadpadala" target="_blank" rel="noopener" class="nav-social" aria-label="LinkedIn">
+        <i class="fab fa-linkedin-in"></i>
+      </a>
+      <a href="P.Prasadu.pdf" class="nav-cv" target="_blank" rel="noopener">Resume ↗</a>
     </div>
-    <nav class="nav-links">
-      <a href="#home" class="active">Home</a>
-      <a href="#about">About</a>
-      <a href="#skills">Skills</a>
-      <a href="#projects">Projects</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </header>
+  </nav>
 
-  <!-- Hero Section -->
-  <section id="home" class="hero">
-    <div class="hero-left">
-      <h1>Hi, I'm Durga Prasadu Padala</h1>
-      <p>A passionate software developer building modern web and machine learning applications.</p>
-      <a href="#projects" class="btn">See My Work</a>
-      <a href="P.Prasadu.pdf" class="btn" download>Get My Resume</a>
-    </div>
-    <div class="hero-right">
-      <img src="image.jpeg" alt="Durga Prasadu Padala" />
-    </div>
-  </section>
+  <!-- ============================================================
+       HERO
+       ============================================================ -->
+  <section id="hero">
+    <div class="h-bg"></div>
+    <div class="h-grid"></div>
+    <div class="h-ring"></div>
+    <div class="h-ring2"></div>
 
-  <!-- About Section -->
-  <section id="about" class="section">
-    <div class="about-container">
-      <div class="about-image">
-        <img src="image.jpeg" alt="Durga Prasadu Padala" />
+    <!-- Profile Photo (hero) -->
+    <div class="h-photo-wrap">
+      <div class="h-photo-frame">
+        <img
+          src="image.jpeg"
+          alt="Padala Durga Prasadu"
+          loading="eager"
+        >
       </div>
-      <div class="about-text">
-        <h2>About Me</h2>
-        <p>Hello! I am <strong>Durga Prasadu Padala</strong>, an aspiring software engineer and AI/ML enthusiast. I specialize in developing applications that solve real-world problems using technologies such as:</p>
-        <ul>
-          <li><strong>Web Development:</strong> HTML, CSS, JavaScript, and responsive UI design.</li>
-          <li><strong>Android Development:</strong> Kotlin, Flutter, and building interactive mobile apps.</li>
-          <li><strong>AI & Machine Learning:</strong> Python, TensorFlow, PyTorch, deep learning, computer vision, and NLP.</li>
-        </ul>
-        <p>I enjoy:</p>
-        <ul>
-          <li>Building AI-powered applications that enhance productivity.</li>
-          <li>Solving algorithmic challenges and exploring data-driven insights.</li>
-          <li>Learning and experimenting with emerging technologies.</li>
-        </ul>
-        <p>I aim to create software that is efficient, impactful, and user-friendly. I'm always open to collaboration and learning from challenging projects.</p>
-      </div>
+      <span class="h-photo-tag">Padala Durga Prasadu · AI/ML Engineer</span>
     </div>
-  </section>
 
-  <!-- Skills Section -->
-  <section id="skills" class="section">
-    <h2>Skills</h2>
-    <p class="skills-tagline">Here’s what I can do</p>
-    <div class="skills-line">
-      <div class="skill">
-        <img src="python.png" alt="Python Logo" class="skill-logo" />
-        <span>Python</span>
-        <p class="skill-description">Experienced Python developer with practical hackathon experience.</p>
+    <div class="h-eye">AI/ML Engineer &nbsp;·&nbsp; BCI Researcher &nbsp;·&nbsp; Andhra Pradesh, India</div>
+
+    <h1 class="h-name">
+      <span class="h-nl">Padala</span>
+      <span class="h-nl">Durga Prasadu</span>
+    </h1>
+
+    <p class="h-desc">
+      Building <em>brain-computer interfaces</em> &amp; intelligent systems.<br>
+      B.Tech CSE (AI/ML) &middot; IEEE Published &middot; Pursuing MS in Germany.
+    </p>
+
+    <div class="h-acts">
+      <a href="#projects" class="btn-p">View Projects</a>
+      <a href="#contact"  class="btn-g">Get In Touch</a>
+    </div>
+
+    <div class="h-stats">
+      <div class="s-item">
+        <span class="s-num">22</span>
+        <span class="s-lbl">EEG Intents</span>
       </div>
-      <div class="skill">
-        <img src="ml.jpeg" alt="Machine Learning" class="skill-logo" />
-        <span>Machine Learning</span>
-        <p class="skill-description">Build ML models and implement AI solutions for real-world use cases.</p>
+      <div class="s-divider"></div>
+      <div class="s-item">
+        <span class="s-num">7.58</span>
+        <span class="s-lbl">CGPA / 10</span>
       </div>
-      <div class="skill">
-        <img src="android.jpeg" alt="Android Development" class="skill-logo" />
-        <span>Android Development</span>
-        <p class="skill-description">Develop Android apps using Kotlin and Flutter.</p>
-      </div>
-      <div class="skill">
-        <img src="web.jpeg" alt="Web Development" class="skill-logo" />
-        <span>Web Development</span>
-        <p class="skill-description">Create responsive and dynamic websites with HTML, CSS, JS, and React.</p>
-      </div>
-      <div class="skill">
-        <img src="dsa.jpg" alt="DSA" class="skill-logo" />
-        <span>DSA</span>
-        <p class="skill-description">Solve algorithmic problems and optimize solutions for performance.</p>
+      <div class="s-divider"></div>
+      <div class="s-item">
+        <span class="s-num">IEEE</span>
+        <span class="s-lbl">Published</span>
       </div>
     </div>
-  </section>
 
-  <!-- Projects Section -->
-  <section id="projects" class="section">
-    <h2>Projects</h2>
-    <div class="projects-container">
-      <div class="project-card">
-        <img src="cropiq.png" alt="CropIQ" />
-        <h3>CropIQ App</h3>
-        <p><strong>Status:</strong> Completed</p>
-        <p>AI-based crop recommendation system using satellite imagery.</p>
-        <a href="CropIQ.pdf" download class="download-btn">Download Project</a>
-      </div>
-
-      <div class="project-card">
-        <img src="synex.jpg" alt="Synex" />
-        <h3>Synex</h3>
-        <p><strong>Status:</strong> Ongoing Research</p>
-      </div>
-
-      <div class="project-card">
-        <img src="rese.jpeg" alt="Research Paper" />
-        <h3>Research Papers</h3>
-        <p><strong>Status:</strong> Published</p>
-        <p>Published CropIQ research paper accepted by IEEE Conference.</p>
-        <a href="Cropiq Research Paper.pdf" download class="download-btn">Download Paper</a>
-      </div>
-
-      <div class="project-card">
-        <img src="cert.jpg" alt="Certifications" />
-        <h3>Certifications</h3>
-        <p><strong>Status:</strong> Completed</p>
-        <p>Certified in Python, AI/ML, and Hackathon participation.</p>
-        <a href="certificates.pdf" download class="download-btn">Download Certifications</a>
-      </div>
+    <div class="scroll-ind">
+      <div class="scroll-l"></div>
+      <span class="scroll-t">scroll</span>
     </div>
   </section>
 
-  <!-- Contact Section -->
-  <section id="contact" class="section">
-    <h2>Contact Me</h2>
-    <p>Email: <a href="mailto:padalaprasad94@gmail.com">padalaprasad94@gmail.com</a></p>
-    <p>Phone: <a href="tel:+918008108670">+91 8008108670</a></p>
-    <div class="social-links">
-      <a href="https://github.com/padaladurgaprasadu" target="_blank"><i class="fab fa-github"></i></a>
-      <a href="https://in.linkedin.com/in/prasadpadala" target="_blank"><i class="fab fa-linkedin"></i></a>
+  <!-- ============================================================
+       ABOUT
+       ============================================================ -->
+  <section id="about" class="sp">
+    <div class="s-tag reveal">01 — ABOUT</div>
+    <h2 class="s-title reveal rd1">
+      Researcher.<br><em>Builder.</em> Dreamer.
+    </h2>
+
+    <div class="about-g">
+
+      <!-- Photo column -->
+      <div class="about-photo reveal rd2">
+        <div class="about-photo-frame">
+          <img
+            src="image.jpeg"
+            alt="Padala Durga Prasadu — About"
+            loading="lazy"
+          >
+          <!-- Floating badge -->
+          <div class="about-photo-badge">
+            <span class="b-num">7.58</span>
+            <span class="b-lbl">CGPA / 10</span>
+          </div>
+        </div>
+        <span class="about-photo-label">B.Tech CSE (AI/ML) · KARE, Tamil Nadu · 2025</span>
+      </div>
+
+      <!-- Text column -->
+      <div class="about-content reveal rd3">
+        <p>
+          I'm <strong>Padala Durga Prasadu</strong>, a recent B.Tech graduate in
+          Computer Science (AI/ML) from Kalasalingam Academy of Research and
+          Education, Tamil Nadu. My work sits at the intersection of
+          <strong>neuroscience and artificial intelligence</strong> — specifically,
+          building accessible brain-computer interface systems.
+        </p>
+        <p>
+          My flagship project, <strong>SynapLink</strong>, is a hierarchical EEG
+          intent-recognition system with a custom NPU-1 chip concept, targeting
+          85mW power consumption. I'm also the creator of <strong>CropIQ</strong>
+          — a satellite imagery crop recommendation system published at
+          IEEE ICIRCA-2025.
+        </p>
+        <p>
+          Currently pursuing <strong>MS admissions in Germany</strong>
+          (Winter 2026/27), with a focus on neural engineering and intelligent
+          systems. I believe technology should be built for impact,
+          accessibility, and the long term.
+        </p>
+
+        <div class="drows">
+          <div class="dr">
+            <span class="dr-lbl">DEGREE</span>
+            <span class="dr-val">B.Tech CSE (AI/ML)</span>
+          </div>
+          <div class="dr">
+            <span class="dr-lbl">UNIVERSITY</span>
+            <span class="dr-val">KARE, Tamil Nadu</span>
+          </div>
+          <div class="dr">
+            <span class="dr-lbl">CGPA</span>
+            <span class="dr-val">7.58 / 10</span>
+          </div>
+          <div class="dr">
+            <span class="dr-lbl">LOCATION</span>
+            <span class="dr-val">Guntur, Andhra Pradesh</span>
+          </div>
+          <div class="dr">
+            <span class="dr-lbl">STATUS</span>
+            <span class="bdg">Pursuing MS — Germany</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Quote + achievements -->
+    <div class="a-hi reveal rd4" style="margin-top: 64px;">
+      <blockquote>
+        "The brain is the most complex interface ever built. My goal is to make
+        it speak to machines — and make machines listen."
+      </blockquote>
+      <cite>— Durga Prasadu, on SynapLink</cite>
+      <div class="achvs">
+        <div class="achv">
+          <div class="achv-dot" style="background:var(--accent)"></div>
+          <span class="achv-t">G20 Hackathon — 3rd Place National</span>
+        </div>
+        <div class="achv">
+          <div class="achv-dot" style="background:var(--accent2)"></div>
+          <span class="achv-t">Ideathon — 1st Place</span>
+        </div>
+        <div class="achv">
+          <div class="achv-dot" style="background:var(--accent3)"></div>
+          <span class="achv-t">IEEE ICIRCA-2025 — Peer Reviewed &amp; Published</span>
+        </div>
+        <div class="achv">
+          <div class="achv-dot" style="background:var(--accent4)"></div>
+          <span class="achv-t">Stanford ML · Oracle Cloud AI · NPTEL Embedded Systems</span>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- Footer -->
+  <!-- ============================================================
+       SKILLS
+       ============================================================ -->
+  <section id="skills" class="sp">
+    <div class="s-tag reveal">02 — SKILLS</div>
+    <h2 class="s-title reveal rd1">The Stack.<br><em>The Craft.</em></h2>
+
+    <div class="sk-g">
+      <div class="sk-c reveal rd1">
+        <span class="sk-i">01</span>
+        <div class="sk-n">AI &amp; Machine Learning</div>
+        <div class="sk-d">Deep learning, computer vision, NLP, and hierarchical classification pipelines. Hierarchical Random Forest with 97.5% L1 accuracy on SynapLink.</div>
+        <div class="sk-tags">
+          <span class="sk-tag">PyTorch</span>
+          <span class="sk-tag">TensorFlow</span>
+          <span class="sk-tag">Random Forest</span>
+          <span class="sk-tag">CNNs</span>
+        </div>
+      </div>
+
+      <div class="sk-c reveal rd2">
+        <span class="sk-i">02</span>
+        <div class="sk-n">BCI &amp; EEG Processing</div>
+        <div class="sk-d">Real-time EEG acquisition using ADS1299 + ESP32, bandpass filtering, feature extraction, and 22-intent hierarchical recognition pipeline.</div>
+        <div class="sk-tags">
+          <span class="sk-tag">ADS1299</span>
+          <span class="sk-tag">ESP32</span>
+          <span class="sk-tag">MNE-Python</span>
+          <span class="sk-tag">EEG</span>
+        </div>
+      </div>
+
+      <div class="sk-c reveal rd3">
+        <span class="sk-i">03</span>
+        <div class="sk-n">Python Development</div>
+        <div class="sk-d">End-to-end ML systems, data pipelines, and API integrations. Hackathon-tested with production AI deployment experience.</div>
+        <div class="sk-tags">
+          <span class="sk-tag">Python</span>
+          <span class="sk-tag">FastAPI</span>
+          <span class="sk-tag">Pandas</span>
+          <span class="sk-tag">NumPy</span>
+        </div>
+      </div>
+
+      <div class="sk-c reveal rd1">
+        <span class="sk-i">04</span>
+        <div class="sk-n">Web Development</div>
+        <div class="sk-d">Responsive modern web apps and client websites. React, HTML/CSS/JS, and production-grade editorial UI design.</div>
+        <div class="sk-tags">
+          <span class="sk-tag">React</span>
+          <span class="sk-tag">JavaScript</span>
+          <span class="sk-tag">HTML/CSS</span>
+          <span class="sk-tag">Tailwind</span>
+        </div>
+      </div>
+
+      <div class="sk-c reveal rd2">
+        <span class="sk-i">05</span>
+        <div class="sk-n">Android Development</div>
+        <div class="sk-d">Mobile app development — CropIQ full Android prototype with satellite imagery AI crop recommendations and real-time data.</div>
+        <div class="sk-tags">
+          <span class="sk-tag">Kotlin</span>
+          <span class="sk-tag">Flutter</span>
+          <span class="sk-tag">Firebase</span>
+          <span class="sk-tag">REST APIs</span>
+        </div>
+      </div>
+
+      <div class="sk-c reveal rd3">
+        <span class="sk-i">06</span>
+        <div class="sk-n">Embedded &amp; Hardware</div>
+        <div class="sk-d">NPU-1 chip concept: 9-block architecture, 85mW target, 12×12mm QFN-68 package. Realistic path: FPGA → Efabless shuttle.</div>
+        <div class="sk-tags">
+          <span class="sk-tag">ESP32</span>
+          <span class="sk-tag">FPGA</span>
+          <span class="sk-tag">Circuit Design</span>
+          <span class="sk-tag">VHDL</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PROJECTS
+       ============================================================ -->
+  <section id="projects" class="sp">
+    <div class="s-tag reveal">03 — PROJECTS</div>
+    <h2 class="s-title reveal rd1">Selected<br><em>Work.</em></h2>
+
+    <div class="proj-l">
+
+      <div class="p-item reveal">
+        <span class="p-num">01</span>
+        <div class="p-info">
+          <div class="p-name">SynapLink</div>
+          <div class="p-meta">Brain-Computer Interface &nbsp;&middot;&nbsp; <span>EEG · Hierarchical RF · NPU-1 · Claude API</span></div>
+        </div>
+        <div class="p-right">
+          <div class="p-tags">
+            <span class="p-tag">AI/ML</span>
+            <span class="p-tag">Embedded</span>
+            <span class="p-tag">Hardware</span>
+          </div>
+          <span class="st st-on">Active</span>
+        </div>
+      </div>
+
+      <div class="p-item reveal">
+        <span class="p-num">02</span>
+        <div class="p-info">
+          <div class="p-name">CropIQ</div>
+          <div class="p-meta">Satellite Imagery Crop Recommendation &nbsp;&middot;&nbsp; <span>EfficientNet · Android · IEEE Published</span></div>
+        </div>
+        <div class="p-right">
+          <div class="p-tags">
+            <span class="p-tag">CV</span>
+            <span class="p-tag">Android</span>
+            <span class="p-tag">Research</span>
+          </div>
+          <a href="CropIQ.pdf" download class="p-dl" title="Download Project">
+            <i class="fas fa-download"></i>
+          </a>
+          <span class="st st-done">Complete</span>
+        </div>
+      </div>
+
+      <div class="p-item reveal">
+        <span class="p-num">03</span>
+        <div class="p-info">
+          <div class="p-name">IEEE ICIRCA-2025 Publication</div>
+          <div class="p-meta">Peer-Reviewed Research &nbsp;&middot;&nbsp; <span>CropIQ · EfficientNet · Satellite Imagery</span></div>
+        </div>
+        <div class="p-right">
+          <div class="p-tags">
+            <span class="p-tag">Research</span>
+            <span class="p-tag">IEEE</span>
+          </div>
+          <a href="Cropiq Research Paper.pdf" download class="p-dl" title="Download Paper">
+            <i class="fas fa-download"></i>
+          </a>
+          <span class="st st-pub">Published</span>
+        </div>
+      </div>
+
+      <div class="p-item reveal">
+        <span class="p-num">04</span>
+        <div class="p-info">
+          <div class="p-name">FlowSync</div>
+          <div class="p-meta">Cognitive-Adaptive Developer IDE Tool &nbsp;&middot;&nbsp; <span>SynapLink Extension · BCI-driven IDE</span></div>
+        </div>
+        <div class="p-right">
+          <div class="p-tags">
+            <span class="p-tag">Product</span>
+            <span class="p-tag">BCI</span>
+          </div>
+          <span class="st st-on">Concept</span>
+        </div>
+      </div>
+
+      <div class="p-item reveal">
+        <span class="p-num">05</span>
+        <div class="p-info">
+          <div class="p-name">NPU-1 Chip Architecture</div>
+          <div class="p-meta">Custom Neural Processing Unit &nbsp;&middot;&nbsp; <span>85mW · 9-Block · QFN-68 · 12×12mm</span></div>
+        </div>
+        <div class="p-right">
+          <div class="p-tags">
+            <span class="p-tag">Hardware</span>
+            <span class="p-tag">VLSI</span>
+          </div>
+          <span class="st st-on">Design</span>
+        </div>
+      </div>
+
+      <div class="p-item reveal">
+        <span class="p-num">06</span>
+        <div class="p-info">
+          <div class="p-name">BioQuant</div>
+          <div class="p-meta">Domain-Aware KV-Cache Compression for Biomedical LLMs &nbsp;&middot;&nbsp; <span>LLM · Memory Optimization</span></div>
+        </div>
+        <div class="p-right">
+          <div class="p-tags">
+            <span class="p-tag">LLM</span>
+            <span class="p-tag">Biomedical</span>
+          </div>
+          <span class="st st-on">Concept</span>
+        </div>
+      </div>
+
+      <div class="p-item reveal">
+        <span class="p-num">07</span>
+        <div class="p-info">
+          <div class="p-name">CropIQ Android App</div>
+          <div class="p-meta">Full React + Android Prototype &nbsp;&middot;&nbsp; <span>Satellite Imagery · Mobile UI · Final Year Project</span></div>
+        </div>
+        <div class="p-right">
+          <div class="p-tags">
+            <span class="p-tag">Android</span>
+            <span class="p-tag">React</span>
+          </div>
+          <span class="st st-done">Complete</span>
+        </div>
+      </div>
+
+      <div class="p-item reveal">
+        <span class="p-num">08</span>
+        <div class="p-info">
+          <div class="p-name">Putharekulu Sweet Business Website</div>
+          <div class="p-meta">Client Web Project &nbsp;&middot;&nbsp; <span>E-commerce · Branding · Traditional Sweet Brand</span></div>
+        </div>
+        <div class="p-right">
+          <div class="p-tags">
+            <span class="p-tag">Web</span>
+            <span class="p-tag">Client</span>
+          </div>
+          <span class="st st-done">Delivered</span>
+        </div>
+      </div>
+
+      <div class="p-item reveal">
+        <span class="p-num">09</span>
+        <div class="p-info">
+          <div class="p-name">Portfolio — prasad.dev</div>
+          <div class="p-meta">Personal Brand &nbsp;&middot;&nbsp; <span>Dark Editorial Design · Cinematic Animations · GitHub Pages</span></div>
+        </div>
+        <div class="p-right">
+          <div class="p-tags">
+            <span class="p-tag">Web</span>
+            <span class="p-tag">Design</span>
+          </div>
+          <span class="st st-done">Live</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       LEETCODE DASHBOARD
+       ============================================================ -->
+  <section id="leetcode" class="sp">
+    <div class="s-tag reveal">04 — CODING PROFILE</div>
+    <h2 class="s-title reveal rd1">LeetCode<br><em>Dashboard.</em></h2>
+    <p class="reveal rd2" style="font-family:var(--mono);font-size:11px;color:var(--text3);letter-spacing:.1em;margin-top:-8px">
+      Live data · Auto-updates on every visit
+    </p>
+
+    <!-- JS renders into this container -->
+    <div id="lcWrap" class="lc-wrap reveal rd3">
+      <div class="lc-loading">⟳ &nbsp;Fetching live LeetCode stats...</div>
+    </div>
+
+    <a href="https://leetcode.com/u/DurgaPrasadu/" target="_blank" rel="noopener"
+       class="lc-profile-link reveal rd4">
+      View Full LeetCode Profile ↗
+    </a>
+  </section>
+
+  <!-- ============================================================
+       CERTIFICATIONS
+       ============================================================ -->
+  <section id="certifications" class="sp">
+    <div class="s-tag reveal">05 — CERTIFICATIONS</div>
+    <h2 class="s-title reveal rd1">Credentials<br><em>&amp; Recognition.</em></h2>
+
+    <div class="cert-g">
+
+      <div class="cert-c reveal rd1" style="--cc:var(--accent3)">
+        <span class="cert-iss">STANFORD UNIVERSITY · COURSERA</span>
+        <div class="cert-nm">Machine Learning Specialization</div>
+        <div class="cert-d">Supervised &amp; unsupervised learning, deep learning, recommender systems, and neural networks by Andrew Ng.</div>
+        <span class="cert-b cb-v">Certified</span>
+      </div>
+
+      <div class="cert-c reveal rd2" style="--cc:#E25C2F">
+        <span class="cert-iss">ORACLE</span>
+        <div class="cert-nm">Oracle Cloud AI Foundations</div>
+        <div class="cert-d">Cloud-based AI/ML services, GenAI models, vector databases, and OCI infrastructure for AI deployment.</div>
+        <span class="cert-b cb-v">Certified</span>
+      </div>
+
+      <div class="cert-c reveal rd3" style="--cc:var(--accent2)">
+        <span class="cert-iss">NPTEL · IIT</span>
+        <div class="cert-nm">Embedded Systems Design</div>
+        <div class="cert-d">Microcontroller programming, real-time OS, hardware-software co-design, and RTOS for embedded IoT applications.</div>
+        <span class="cert-b cb-v">Certified</span>
+      </div>
+
+      <div class="cert-c reveal rd1" style="--cc:#0074D9">
+        <span class="cert-iss">JPMORGAN CHASE · FORAGE</span>
+        <div class="cert-nm">Software Engineering Virtual Experience</div>
+        <div class="cert-d">JPMorgan's Perspective framework — real-world financial data display and interface engineering simulation.</div>
+        <span class="cert-b cb-s">Simulation</span>
+      </div>
+
+      <div class="cert-c reveal rd2" style="--cc:#004B87">
+        <span class="cert-iss">TATA GROUP · FORAGE</span>
+        <div class="cert-nm">GenAI Virtual Experience</div>
+        <div class="cert-d">Generative AI strategy, prompt engineering, and enterprise AI use case development in TCS workflows.</div>
+        <span class="cert-b cb-s">Simulation</span>
+      </div>
+
+      <div class="cert-c reveal rd3" style="--cc:var(--accent3)">
+        <span class="cert-iss">NATIONAL HACKATHON · G20</span>
+        <div class="cert-nm">G20 Hackathon — 3rd Place</div>
+        <div class="cert-d">Competed nationally in a G20-themed hackathon. 3rd place with an AI-driven solution targeting G20 priority themes.</div>
+        <span class="cert-b cb-a">🏆 3rd Place</span>
+      </div>
+
+      <div class="cert-c reveal rd1" style="--cc:var(--accent)">
+        <span class="cert-iss">KARE · IDEATHON</span>
+        <div class="cert-nm">Ideathon — 1st Place</div>
+        <div class="cert-d">Won 1st place at the university Ideathon. Presented an innovative AI/tech concept judged best among all entries.</div>
+        <span class="cert-b cb-a">🥇 1st Place</span>
+      </div>
+
+      <div class="cert-c reveal rd2" style="--cc:var(--accent2)">
+        <span class="cert-iss">IEEE · ICIRCA-2025</span>
+        <div class="cert-nm">Research Publication — CropIQ</div>
+        <div class="cert-d">Peer-reviewed paper at IEEE ICIRCA-2025. Co-authored with Yashwant. EfficientNet + satellite imagery for crop recommendation.</div>
+        <span class="cert-b cb-v">Published</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       EDUCATION
+       ============================================================ -->
+  <section id="education" class="sp">
+    <div class="s-tag reveal">06 — EDUCATION</div>
+    <h2 class="s-title reveal rd1">Academic<br><em>Journey.</em></h2>
+
+    <div class="tl">
+
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-d">2021 — 2025</div>
+        <div class="tl-t">B.Tech Computer Science (AI/ML)</div>
+        <div class="tl-s">Kalasalingam Academy of Research and Education, Tamil Nadu</div>
+        <div class="tl-p">Specialized in AI, machine learning, embedded systems, and signal processing. Led BCI research (SynapLink), satellite imagery AI (CropIQ), IEEE conference publication, hackathon wins, and multiple certified courses.</div>
+        <div class="cgpa-b">CGPA: 7.58 / 10 — Strong upward trajectory</div>
+      </div>
+
+      <div class="tl-item reveal rd1">
+        <div class="tl-dot" style="background:var(--accent2);box-shadow:0 0 0 4px rgba(168,159,232,.14)"></div>
+        <div class="tl-d" style="color:var(--accent2)">2026/27 — Target</div>
+        <div class="tl-t">M.Sc. / M.Eng. — Germany</div>
+        <div class="tl-s">Applications Open · Winter Intake 2026</div>
+        <div class="tl-p">Targeting Intelligent Systems, Neural Engineering, and Computer Science programs. Shortlisted universities: BTU Cottbus (~90%), TU Chemnitz (~78%), RPTU Kaiserslautern (~72%), HHU Düsseldorf, Uni Stuttgart, Uni Bonn.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CONTACT
+       ============================================================ -->
+  <section id="contact" class="sp">
+    <div class="c-inner">
+      <div class="s-tag reveal">07 — CONTACT</div>
+      <h2 class="s-title reveal rd1">Let's build<br><em>something.</em></h2>
+      <p class="reveal rd2" style="font-family:var(--sans);font-size:14px;color:var(--text2);line-height:1.9;max-width:460px;margin-top:8px">
+        Open to research collaborations, internship opportunities, and conversations about BCI, AI systems, or German university admissions.
+      </p>
+
+      <div class="c-links">
+        <a href="mailto:padalaprasad94@gmail.com" class="c-link reveal">
+          <div class="c-ll">
+            <span class="c-icon">EMAIL</span>
+            <span class="c-lbl">padalaprasad94@gmail.com</span>
+          </div>
+          <span class="c-arr">↗</span>
+        </a>
+
+        <a href="tel:+918008108670" class="c-link reveal rd1">
+          <div class="c-ll">
+            <span class="c-icon">PHONE</span>
+            <span class="c-lbl">+91 8008 108 670</span>
+          </div>
+          <span class="c-arr">↗</span>
+        </a>
+
+        <a href="https://github.com/padaladurgaprasadu" target="_blank" rel="noopener" class="c-link reveal rd3">
+          <div class="c-ll">
+            <span class="c-icon"><i class="fab fa-github"></i> GITHUB</span>
+            <span class="c-lbl">padaladurgaprasadu</span>
+          </div>
+          <span class="c-arr">↗</span>
+        </a>
+
+        <a href="https://in.linkedin.com/in/prasadpadala" target="_blank" rel="noopener" class="c-link reveal rd4">
+          <div class="c-ll">
+            <span class="c-icon"><i class="fab fa-linkedin-in"></i> LINKEDIN</span>
+            <span class="c-lbl">prasadpadala</span>
+          </div>
+          <span class="c-arr">↗</span>
+        </a>
+
+        <a href="https://leetcode.com/u/DurgaPrasadu/" target="_blank" rel="noopener" class="c-link reveal rd4">
+          <div class="c-ll">
+            <span class="c-icon">LEETCODE</span>
+            <span class="c-lbl">DurgaPrasadu</span>
+          </div>
+          <span class="c-arr">↗</span>
+        </a>
+
+        <a href="P.Prasadu.pdf" target="_blank" rel="noopener" class="c-link reveal rd4">
+          <div class="c-ll">
+            <span class="c-icon">RESUME</span>
+            <span class="c-lbl">Download CV / Europass</span>
+          </div>
+          <span class="c-arr">↗</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
   <footer>
-    <p>&copy; 2025 Prasad Padala. All rights reserved.</p>
-    <a href="#top" class="footer-scroll-top">&#8679;</a>
+    <div class="f-l">© 2025 <strong>Padala Durga Prasadu</strong>. All rights reserved.</div>
+
+    <div class="f-social">
+      <a href="https://github.com/padaladurgaprasadu" target="_blank" rel="noopener" aria-label="GitHub" class="f-icon">
+        <i class="fab fa-github"></i>
+      </a>
+      <a href="https://in.linkedin.com/in/prasadpadala" target="_blank" rel="noopener" aria-label="LinkedIn" class="f-icon">
+        <i class="fab fa-linkedin-in"></i>
+      </a>
+      <a href="https://leetcode.com/u/DurgaPrasadu/" target="_blank" rel="noopener" aria-label="LeetCode" class="f-icon">
+        <i class="fas fa-code"></i>
+      </a>
+      <a href="mailto:padalaprasad94@gmail.com" aria-label="Email" class="f-icon">
+        <i class="fas fa-envelope"></i>
+      </a>
+    </div>
+
+    <div class="f-right-group">
+      <div class="f-r">Designed with intention · Built for impact</div>
+      <a href="#hero" class="f-top" aria-label="Back to top">↑</a>
+    </div>
   </footer>
 
-  <!-- JS -->
-  <script src="script.js"></script>
+  <!-- Script (deferred — loads after HTML) -->
+  <script src="script.js" defer></script>
+
 </body>
 </html>
