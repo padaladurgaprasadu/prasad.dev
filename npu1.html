@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NPU-1 — Chip Architecture Dashboard</title>
+  <link rel="icon" href="favicon.jpg" type="image/jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+  --bg:#04060A;--bg2:#080B12;--bg3:#0C0F18;--bg4:#10141E;
+  --blue:#4A8FE8;--blue2:rgba(74,143,232,.12);
+  --purple:#9F7FE8;--purple2:rgba(159,127,232,.1);
+  --green:#3EC99A;--green2:rgba(62,201,154,.1);
+  --orange:#E8853A;--orange2:rgba(232,133,58,.1);
+  --teal:#3AC9C9;--teal2:rgba(58,201,201,.1);
+  --amber:#F5BE5A;--red:#ED6A6A;
+  --text:#E8E6DF;--text2:#828080;--text3:#484644;
+  --border:rgba(255,255,255,.052);--border2:rgba(255,255,255,.09);
+  --mono:'DM Mono',monospace;--serif:'Cormorant Garamond',serif;--sans:'Syne',sans-serif;
+  --ease:cubic-bezier(0.16,1,0.3,1);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+
+body::before{content:'';position:fixed;inset:0;z-index:9000;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='.025'/%3E%3C/svg%3E");
+  background-size:160px;pointer-events:none;opacity:.5}
+
+/* ---- TOPBAR ---- */
+.topbar{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  padding:14px 48px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(4,6,10,.95);border-bottom:1px solid var(--border);
+  backdrop-filter:blur(20px);
+}
+.topbar-left{display:flex;align-items:center;gap:18px}
+.back-btn{
+  font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:.14em;
+  display:flex;align-items:center;gap:7px;padding:6px 14px;
+  border:1px solid var(--border2);transition:color .25s,border-color .25s;
+}
+.back-btn:hover{color:var(--blue);border-color:rgba(74,143,232,.35)}
+.topbar-title{font-family:var(--mono);font-size:10px;color:var(--text2);letter-spacing:.15em}
+.topbar-title span{color:var(--blue)}
+.topbar-badges{display:flex;gap:8px}
+.tbadge{font-family:var(--mono);font-size:8px;letter-spacing:.12em;padding:4px 12px}
+.tbadge-blue  {color:var(--blue);  border:1px solid rgba(74,143,232,.25); background:rgba(74,143,232,.07)}
+.tbadge-green {color:var(--green); border:1px solid rgba(62,201,154,.22); background:rgba(62,201,154,.06)}
+.tbadge-amber {color:var(--amber); border:1px solid rgba(245,190,90,.22); background:rgba(245,190,90,.06)}
+
+/* ---- HERO ---- */
+.hero{
+  min-height:100vh;padding:100px 48px 72px;
+  position:relative;overflow:hidden;
+  display:grid;grid-template-rows:1fr auto;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 65% 55% at 60% 38%,rgba(74,143,232,.07) 0%,transparent 60%),
+    radial-gradient(ellipse 45% 45% at 20% 70%,rgba(159,127,232,.05) 0%,transparent 55%),
+    radial-gradient(ellipse 40% 35% at 85% 80%,rgba(62,201,154,.04) 0%,transparent 50%);
+}
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.013) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.013) 1px,transparent 1px);
+  background-size:52px 52px;
+  mask-image:radial-gradient(ellipse 90% 80% at 50% 50%,black,transparent);
+}
+
+/* chip die render */
+.hero-chip{
+  position:absolute;right:5%;top:50%;transform:translateY(-50%);
+  width:340px;height:340px;
+  opacity:0;animation:fIn .8s 1.2s both;
+}
+.chip-die{
+  width:100%;height:100%;
+  border:2px solid rgba(74,143,232,.25);
+  background:var(--bg3);
+  position:relative;display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  grid-template-rows:1fr 1fr 1fr 1fr;
+  gap:2px;padding:8px;
+}
+/* bond pads */
+.chip-die::before,.chip-die::after{
+  content:'';position:absolute;
+  background:repeating-linear-gradient(90deg,rgba(245,190,90,.5) 0,rgba(245,190,90,.5) 6px,transparent 6px,transparent 20px);
+  height:8px;left:16px;right:16px;
+}
+.chip-die::before{top:-9px}
+.chip-die::after{bottom:-9px}
+
+.die-block{
+  border-radius:1px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:6.5px;
+  letter-spacing:.06em;text-align:center;
+  position:relative;overflow:hidden;
+  animation:blockPulse 3s infinite;
+  cursor:default;
+  padding:4px;
+}
+.die-block::before{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(45deg,rgba(255,255,255,.02) 0,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);
+}
+.die-block-name{font-size:7px;font-weight:500;margin-bottom:2px;position:relative;z-index:1;line-height:1.3}
+.die-block-sub{font-size:5.5px;opacity:.6;position:relative;z-index:1}
+
+.db-fft    {grid-column:1/2;grid-row:1/3;background:rgba(74,143,232,.15);border:1px solid rgba(74,143,232,.3);color:var(--blue);animation-delay:0s}
+.db-feat   {grid-column:2/4;grid-row:1/2;background:rgba(159,127,232,.15);border:1px solid rgba(159,127,232,.3);color:var(--purple);animation-delay:.4s}
+.db-rf     {grid-column:2/3;grid-row:2/4;background:rgba(62,201,154,.15);border:1px solid rgba(62,201,154,.3);color:var(--green);animation-delay:.2s}
+.db-input  {grid-column:1/2;grid-row:3/4;background:rgba(232,133,58,.15);border:1px solid rgba(232,133,58,.3);color:var(--orange);animation-delay:.6s}
+.db-out    {grid-column:3/4;grid-row:2/4;background:rgba(58,201,201,.15);border:1px solid rgba(58,201,201,.3);color:var(--teal);animation-delay:.8s}
+.db-sram   {grid-column:1/4;grid-row:4/5;background:rgba(130,130,140,.12);border:1px solid rgba(130,130,140,.25);color:var(--text2);animation-delay:1s}
+
+@keyframes blockPulse{0%,100%{opacity:.8}50%{opacity:1}}
+@keyframes fIn{from{opacity:0}to{opacity:1}}
+@keyframes fU{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+@keyframes sU{from{opacity:0;transform:translateY(110%)}to{opacity:1;transform:none}}
+
+/* hero text */
+.hero-content{position:relative;z-index:3;display:flex;flex-direction:column;justify-content:flex-end}
+.h-tag{
+  font-family:var(--mono);font-size:9px;color:var(--blue);letter-spacing:.22em;
+  margin-bottom:28px;display:flex;align-items:center;gap:12px;
+  animation:fU .8s .2s both;
+}
+.h-tag::before{content:'';width:28px;height:1px;background:var(--blue)}
+.h-name{
+  font-family:var(--serif);font-size:clamp(52px,8vw,112px);
+  font-weight:300;line-height:.88;letter-spacing:-.025em;
+  overflow:hidden;margin-bottom:10px;
+}
+.hn-l{display:block;animation:sU 1s var(--ease) both}
+.hn-l:nth-child(1){animation-delay:.3s}
+.hn-l:nth-child(2){animation-delay:.44s;color:var(--blue);font-style:italic}
+.h-sub{
+  font-family:var(--mono);font-size:11px;color:var(--text2);
+  letter-spacing:.1em;line-height:1.9;max-width:560px;
+  margin-bottom:44px;animation:fU .9s .7s both;
+}
+.h-sub em{color:var(--amber);font-style:normal}
+.h-acts{display:flex;gap:12px;animation:fU .8s .9s both}
+.btn-p{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--blue);color:#020c1a;
+  font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.13em;
+  padding:13px 28px;transition:transform .25s,box-shadow .25s;
+}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(74,143,232,.22)}
+.btn-g{
+  display:inline-flex;align-items:center;gap:8px;
+  color:var(--text2);font-family:var(--mono);font-size:10px;letter-spacing:.13em;
+  padding:13px 24px;border:1px solid var(--border2);
+  transition:color .25s,border-color .25s;
+}
+.btn-g:hover{color:var(--text);border-color:rgba(255,255,255,.25)}
+
+/* hero stat bar */
+.h-bottom{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  padding-top:52px;border-top:1px solid var(--border);
+  position:relative;z-index:3;
+}
+.h-stats{display:flex;gap:0;animation:fU .8s 1.1s both}
+.h-stat{padding:18px 28px;border-right:1px solid var(--border);transition:background .25s}
+.h-stat:first-child{padding-left:0}
+.h-stat:hover{background:rgba(74,143,232,.04)}
+.h-stat-n{font-family:var(--serif);font-size:34px;font-weight:300;color:var(--text);display:block;line-height:1}
+.h-stat-l{font-family:var(--mono);font-size:8px;color:var(--text3);letter-spacing:.16em;display:block;margin-top:4px}
+.h-scroll{display:flex;flex-direction:column;align-items:center;gap:6px;opacity:0;animation:fIn 1s 2.2s both}
+.h-scroll-l{width:1px;height:44px;background:linear-gradient(to bottom,transparent,var(--blue));animation:sPulse 2.4s 2.8s infinite}
+.h-scroll-t{font-family:var(--mono);font-size:8px;color:var(--text3);letter-spacing:.22em;writing-mode:vertical-rl}
+@keyframes sPulse{0%,100%{opacity:.28;transform:scaleY(.65);transform-origin:top}50%{opacity:1;transform:scaleY(1)}}
+
+/* ---- LAYOUT ---- */
+.page{max-width:1400px;margin:0 auto;padding:0 48px}
+.section{padding:88px 0;border-top:1px solid var(--border)}
+.s-tag{font-family:var(--mono);font-size:9px;color:var(--blue);letter-spacing:.26em;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.s-tag::before{content:'';width:18px;height:1px;background:var(--blue)}
+.s-title{font-family:var(--serif);font-size:clamp(30px,4vw,58px);font-weight:300;line-height:1.04;letter-spacing:-.01em;margin-bottom:12px}
+.s-title em{font-style:italic;color:var(--purple)}
+.rv{opacity:0;transform:translateY(22px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.rv.on{opacity:1;transform:none}
+.rv1{transition-delay:.1s}.rv2{transition-delay:.2s}.rv3{transition-delay:.3s}.rv4{transition-delay:.42s}
+
+/* ---- OVERVIEW GRID ---- */
+.ov-g{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin-top:48px}
+.ov-col{background:var(--bg2);padding:42px 36px}
+.ov-col p{font-size:13px;color:var(--text2);line-height:1.95;margin-bottom:14px}
+.ov-col p strong{color:var(--text);font-weight:500}
+.info-rows{display:flex;flex-direction:column;border:1px solid var(--border);margin-top:28px}
+.ir{display:flex;justify-content:space-between;align-items:center;padding:11px 15px;border-bottom:1px solid var(--border);transition:background .2s}
+.ir:last-child{border-bottom:none}
+.ir:hover{background:var(--bg3)}
+.ir-l{font-family:var(--mono);font-size:8px;color:var(--text3);letter-spacing:.15em}
+.ir-v{font-family:var(--sans);font-size:12px;color:var(--text);font-weight:500}
+.ir-b{font-family:var(--mono);font-size:8px;padding:2px 9px;letter-spacing:.09em}
+.irb-b{color:var(--blue);  border:1px solid rgba(74,143,232,.22); background:rgba(74,143,232,.06)}
+.irb-g{color:var(--green); border:1px solid rgba(62,201,154,.22); background:rgba(62,201,154,.06)}
+.ov-right{background:var(--bg3);padding:42px 36px}
+.patent-box{background:rgba(245,190,90,.05);border:1px solid rgba(245,190,90,.2);padding:22px;margin-top:20px;position:relative}
+.patent-box::before{content:'';position:absolute;left:0;top:0;width:2px;height:100%;background:var(--amber)}
+.patent-tag{font-family:var(--mono);font-size:8px;color:var(--amber);letter-spacing:.18em;margin-bottom:10px;display:block}
+.patent-item{font-family:var(--mono);font-size:10px;color:var(--text2);margin-bottom:6px;letter-spacing:.06em}
+.patent-item:last-child{margin-bottom:0}
+.patent-item strong{color:var(--amber)}
+
+/* ---- ARCHITECTURE BLOCKS ---- */
+.arch-g{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  grid-template-rows:auto auto auto auto;
+  gap:1px;background:var(--border);border:1px solid var(--border);
+  margin-top:48px;
+}
+.arch-block{
+  padding:32px 26px;position:relative;overflow:hidden;
+  transition:background .3s;cursor:default;
+}
+.arch-block:hover{background:var(--bh,var(--bg3)) !important}
+.arch-block::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--bc,var(--blue));transition:width .55s var(--ease)}
+.arch-block:hover::after{width:100%}
+
+.ab-fft   {--bc:var(--blue);  --bh:rgba(74,143,232,.06);  grid-column:1/2;grid-row:1/2;background:rgba(74,143,232,.04)}
+.ab-feat  {--bc:var(--purple);--bh:rgba(159,127,232,.06); grid-column:2/4;grid-row:1/2;background:rgba(159,127,232,.04)}
+.ab-input {--bc:var(--orange);--bh:rgba(232,133,58,.06);  grid-column:1/2;grid-row:2/4;background:rgba(232,133,58,.04)}
+.ab-rf    {--bc:var(--green); --bh:rgba(62,201,154,.06);  grid-column:2/3;grid-row:2/4;background:rgba(62,201,154,.04)}
+.ab-out   {--bc:var(--teal);  --bh:rgba(58,201,201,.06);  grid-column:3/4;grid-row:2/4;background:rgba(58,201,201,.04)}
+.ab-sram  {--bc:var(--text2); --bh:rgba(130,130,140,.06); grid-column:1/4;grid-row:4/5;background:rgba(130,130,140,.04)}
+.ab-pdn   {--bc:var(--amber); --bh:rgba(245,190,90,.06);  grid-column:1/4;grid-row:5/6;background:rgba(245,190,90,.02)}
+
+.ab-icon{
+  width:44px;height:44px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;margin-bottom:16px;
+  border:1px solid var(--bc,var(--blue));color:var(--bc,var(--blue));
+  background:rgba(74,143,232,.06);
+}
+.ab-num{font-family:var(--mono);font-size:8px;color:var(--text3);letter-spacing:.16em;margin-bottom:8px;display:block}
+.ab-name{font-family:var(--sans);font-size:14px;font-weight:600;color:var(--text);margin-bottom:8px}
+.ab-desc{font-family:var(--sans);font-size:11px;color:var(--text2);line-height:1.75;margin-bottom:12px}
+.ab-specs{display:flex;flex-direction:column;gap:5px}
+.ab-spec{font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:.07em;display:flex;align-items:center;gap:7px}
+.ab-spec::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--bc,var(--blue));flex-shrink:0}
+.ab-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px}
+.ab-tag{font-family:var(--mono);font-size:8px;color:var(--text3);letter-spacing:.07em;padding:2px 7px;border:1px solid var(--border2)}
+
+/* SRAM row — horizontal layout */
+.ab-sram .ab-inner{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:start}
+.sram-banks{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;flex-shrink:0}
+.sram-bank{
+  background:rgba(130,130,140,.1);border:1px solid rgba(130,130,140,.2);
+  padding:10px 8px;text-align:center;
+}
+.sram-bank-n{font-family:var(--serif);font-size:18px;font-weight:300;color:var(--text2);display:block;line-height:1}
+.sram-bank-l{font-family:var(--mono);font-size:7px;color:var(--text3);letter-spacing:.08em;display:block;margin-top:3px}
+
+/* PDN row */
+.ab-pdn .ab-inner{display:flex;align-items:center;gap:40px}
+.pdn-rail{display:flex;align-items:center;gap:10px}
+.pdn-label{font-family:var(--mono);font-size:9px;letter-spacing:.1em}
+.pdn-line{height:3px;width:80px;border-radius:2px}
+.pdn-vdd{background:linear-gradient(90deg,#4A8FE8,#6aaef5)}
+.pdn-gnd{background:linear-gradient(90deg,#484644,#6a6868)}
+
+/* ---- SPECS TABLE ---- */
+.specs-g{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-top:48px}
+.spec-card{background:var(--bg2);padding:28px 22px;position:relative;overflow:hidden;transition:background .3s}
+.spec-card:hover{background:var(--bg3)}
+.spec-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--sc,var(--blue));transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
+.spec-card:hover::before{transform:scaleX(1)}
+.sc-label{font-family:var(--mono);font-size:8px;color:var(--text3);letter-spacing:.17em;margin-bottom:10px;display:block}
+.sc-val{font-family:var(--serif);font-size:44px;font-weight:300;line-height:1;display:block}
+.sc-unit{font-family:var(--mono);font-size:9px;color:var(--text2);margin-top:4px;display:block;letter-spacing:.08em}
+.sc-bar{height:2px;background:rgba(255,255,255,.05);margin-top:14px;border-radius:1px;overflow:hidden}
+.sc-bar-fill{height:100%;border-radius:1px;transition:width 1.4s var(--ease)}
+
+/* ---- SIGNAL FLOW ---- */
+.flow-g{display:flex;align-items:stretch;gap:0;margin-top:48px;border:1px solid var(--border)}
+.flow-step{flex:1;padding:28px 18px;background:var(--bg2);border-right:1px solid var(--border);position:relative;transition:background .3s}
+.flow-step:last-child{border-right:none}
+.flow-step:hover{background:var(--bg3)}
+.flow-num{font-family:var(--mono);font-size:8px;color:var(--text3);letter-spacing:.15em;margin-bottom:10px;display:block}
+.flow-icon{font-size:20px;margin-bottom:10px;display:block}
+.flow-name{font-family:var(--sans);font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px}
+.flow-detail{font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:.07em;line-height:1.7}
+.flow-arrow{
+  position:absolute;right:-14px;top:50%;transform:translateY(-50%);
+  width:26px;height:26px;background:var(--bg4);border:1px solid var(--border2);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:11px;color:var(--text3);
+  z-index:2;
+}
+.flow-step:last-child .flow-arrow{display:none}
+
+/* latency bar */
+.lat-bar{height:3px;border-radius:2px;margin-top:10px;background:rgba(255,255,255,.06);overflow:hidden}
+.lat-fill{height:100%;border-radius:2px;transition:width 1.3s var(--ease)}
+
+/* ---- PRIVACY / SECURITY ---- */
+.priv-g{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin-top:48px}
+.priv-col{background:var(--bg2);padding:38px 32px}
+.priv-item{display:flex;gap:14px;align-items:flex-start;margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid var(--border)}
+.priv-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.priv-icon{
+  width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;flex-shrink:0;margin-top:2px;
+}
+.pi-green{background:rgba(62,201,154,.1);color:var(--green);border:1px solid rgba(62,201,154,.2)}
+.pi-red  {background:rgba(237,106,106,.1);color:var(--red); border:1px solid rgba(237,106,106,.2)}
+.pi-blue {background:rgba(74,143,232,.1); color:var(--blue);border:1px solid rgba(74,143,232,.2)}
+.pi-amber{background:rgba(245,190,90,.1); color:var(--amber);border:1px solid rgba(245,190,90,.2)}
+.priv-text-h{font-family:var(--sans);font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px}
+.priv-text-d{font-family:var(--sans);font-size:12px;color:var(--text2);line-height:1.7}
+
+/* highlight box */
+.highlight-box{
+  background:var(--bg3);padding:28px;margin-top:28px;
+  border:1px solid rgba(62,201,154,.15);position:relative;overflow:hidden;
+}
+.highlight-box::before{content:'';position:absolute;left:0;top:0;width:2px;height:100%;background:var(--green)}
+.highlight-box-tag{font-family:var(--mono);font-size:8px;color:var(--green);letter-spacing:.18em;margin-bottom:8px;display:block}
+.highlight-box p{font-family:var(--sans);font-size:12px;color:var(--text2);line-height:1.8;margin:0}
+
+/* ---- ROADMAP ---- */
+.road-g{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-top:48px}
+.road-card{background:var(--bg2);padding:28px 22px;transition:background .3s}
+.road-card:hover{background:var(--bg3)}
+.road-phase{font-family:var(--mono);font-size:8px;letter-spacing:.16em;margin-bottom:10px;display:block}
+.road-title{font-family:var(--sans);font-size:14px;font-weight:600;color:var(--text);margin-bottom:8px}
+.road-desc{font-family:var(--sans);font-size:11px;color:var(--text2);line-height:1.75;margin-bottom:12px}
+.road-status{font-family:var(--mono);font-size:8px;letter-spacing:.12em;padding:3px 9px;display:inline-block}
+
+/* ---- FOOTER ---- */
+.dash-footer{
+  background:var(--bg);border-top:1px solid var(--border);
+  padding:24px 48px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.df-l{font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:.12em}
+.df-l span{color:var(--blue)}
+.df-r{font-family:var(--mono);font-size:8px;color:var(--text3);letter-spacing:.14em}
+
+/* ---- MOBILE ---- */
+@media(max-width:900px){
+  .topbar{padding:12px 20px}.hero{padding:90px 20px 56px}
+  .page{padding:0 20px}
+  .hero-chip{display:none}
+  .ov-g,.priv-g{grid-template-columns:1fr}
+  .arch-g{grid-template-columns:1fr}
+  .ab-fft,.ab-feat,.ab-input,.ab-rf,.ab-out,.ab-sram,.ab-pdn{grid-column:1;grid-row:auto}
+  .specs-g,.road-g{grid-template-columns:repeat(2,1fr)}
+  .flow-g{flex-direction:column}
+  .flow-step{border-right:none;border-bottom:1px solid var(--border)}
+  .flow-arrow{display:none}
+  .ab-sram .ab-inner{grid-template-columns:1fr}
+  .ab-pdn .ab-inner{flex-wrap:wrap}
+  .h-stats{gap:0}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Portfolio</a>
+    <span class="topbar-title">NPU-1 &nbsp;<span>/</span>&nbsp; Chip Architecture Dashboard</span>
+  </div>
+  <div class="topbar-badges">
+    <span class="tbadge tbadge-blue">28nm CMOS</span>
+    <span class="tbadge tbadge-amber">SynapLink BCI</span>
+    <span class="tbadge tbadge-green">v1.0 · 2026</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+
+  <!-- Chip die visualisation -->
+  <div class="hero-chip">
+    <div class="chip-die">
+      <div class="die-block db-fft">
+        <div class="die-block-name">FFT ENGINE</div>
+        <div class="die-block-sub">16 Cores · 256-pt</div>
+      </div>
+      <div class="die-block db-feat">
+        <div class="die-block-name">FEATURE ENGINE</div>
+        <div class="die-block-sub">31 Features · PLV · HAI</div>
+      </div>
+      <div class="die-block db-input">
+        <div class="die-block-name">INPUT BUFFER</div>
+        <div class="die-block-sub">SPI 20MHz · 16ch</div>
+      </div>
+      <div class="die-block db-rf">
+        <div class="die-block-name">RF INFERENCE</div>
+        <div class="die-block-sub">150 Trees · LUT</div>
+      </div>
+      <div class="die-block db-out">
+        <div class="die-block-name">OUTPUT CTRL</div>
+        <div class="die-block-sub">BLE 5.2 · AES-128</div>
+      </div>
+      <div class="die-block db-sram" style="grid-column:1/4">
+        <div class="die-block-name">SRAM 512KB</div>
+        <div class="die-block-sub">4×128KB Banks</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-content">
+    <div class="h-tag">NEURAL PROCESSING UNIT · SYNAPLINK BCI · 28nm CMOS</div>
+    <h1 class="h-name">
+      <span class="hn-l">NPU-1</span>
+      <span class="hn-l">Architecture</span>
+    </h1>
+    <p class="h-sub">
+      Custom neural processing unit designed for real-time EEG classification.<br>
+      <em>12M Transistors · 5×5mm Die · 2mW Power · 100MHz Clock</em>
+    </p>
+    <div class="h-acts">
+      <a href="https://synaplink-bci.onrender.com/" target="_blank" class="btn-p"><i class="fas fa-external-link-alt"></i> SynapLink Live</a>
+      <a href="#architecture" class="btn-g"><i class="fas fa-microchip"></i> Explore Chip</a>
+    </div>
+  </div>
+
+  <div class="h-bottom">
+    <div class="h-stats">
+      <div class="h-stat"><span class="h-stat-n" style="color:var(--blue)">12M</span><span class="h-stat-l">Transistors</span></div>
+      <div class="h-stat"><span class="h-stat-n" style="color:var(--green)">2mW</span><span class="h-stat-l">Power Budget</span></div>
+      <div class="h-stat"><span class="h-stat-n" style="color:var(--purple)">5×5</span><span class="h-stat-l">mm Die Size</span></div>
+      <div class="h-stat"><span class="h-stat-n" style="color:var(--amber)">100</span><span class="h-stat-l">MHz Clock</span></div>
+      <div class="h-stat"><span class="h-stat-n" style="color:var(--teal)">512</span><span class="h-stat-l">KB SRAM</span></div>
+      <div class="h-stat" style="border-right:none"><span class="h-stat-n">28</span><span class="h-stat-l">nm CMOS</span></div>
+    </div>
+    <div class="h-scroll"><div class="h-scroll-l"></div><span class="h-scroll-t">scroll</span></div>
+  </div>
+</section>
+
+<div class="page">
+
+  <!-- OVERVIEW -->
+  <section class="section">
+    <div class="s-tag rv">01 — OVERVIEW</div>
+    <h2 class="s-title rv rv1">What is<br><em>NPU-1?</em></h2>
+    <div class="ov-g">
+      <div class="ov-col rv rv2">
+        <p><strong>NPU-1</strong> is a purpose-built Neural Processing Unit designed for the <strong>SynapLink Brain-Computer Interface</strong> system. Unlike general-purpose microcontrollers, NPU-1 is architected ground-up for <strong>real-time EEG signal classification</strong> — from raw electrode input to intent output in under 1ms.</p>
+        <p>The chip integrates a complete BCI signal chain: a 16-channel SPI input buffer, a 256-point FFT engine for spectral decomposition, a 31-feature extraction engine, and a 150-tree Random Forest inference engine — all in a 5×5mm die fabricated in <strong>28nm CMOS</strong>.</p>
+        <p>Privacy is a first-class design constraint. Raw EEG data <strong>never leaves the chip</strong>. Only a 3-byte intent classification result is transmitted via BLE 5.2 with AES-128 encryption.</p>
+        <div class="info-rows">
+          <div class="ir"><span class="ir-l">PROJECT</span><span class="ir-v">SynapLink BCI — NPU-1 v1.0</span></div>
+          <div class="ir"><span class="ir-l">PROCESS</span><span class="ir-v">28nm CMOS (TSMC via Europractice)</span></div>
+          <div class="ir"><span class="ir-l">PACKAGE</span><span class="ir-v">QFN-68 · 12×12mm</span></div>
+          <div class="ir"><span class="ir-l">DIE SIZE</span><span class="ir-v">5×5mm · 12M Transistors</span></div>
+          <div class="ir"><span class="ir-l">POWER</span><span class="ir-v">2mW typical · 3.3V supply</span></div>
+          <div class="ir"><span class="ir-l">CLOCK</span><span class="ir-v">100MHz system · 20MHz SPI</span></div>
+          <div class="ir"><span class="ir-l">STATUS</span><span class="ir-b irb-b">Concept Design · v1.0</span></div>
+          <div class="ir"><span class="ir-l">TARGET PATH</span><span class="ir-b irb-g">FPGA → Efabless → TSMC</span></div>
+        </div>
+      </div>
+      <div class="ov-right rv rv3">
+        <p style="font-size:13px;color:var(--text2);line-height:1.9;margin-bottom:20px">The NPU-1 houses a <strong style="color:var(--text)">patented Ratio Calculator</strong> that computes five band-power ratios critical for cognitive state discrimination — forming the core feature set for intent recognition.</p>
+        <div class="patent-box">
+          <span class="patent-tag">RATIO CALCULATOR — PATENT PENDING</span>
+          <div class="patent-item"><strong>R1</strong> = θ/α &nbsp;·&nbsp; Theta-Alpha Engagement Ratio</div>
+          <div class="patent-item"><strong>R2</strong> = β/γ &nbsp;·&nbsp; Beta-Gamma Focus Index</div>
+          <div class="patent-item"><strong>R3</strong> = θ/β &nbsp;·&nbsp; Theta-Beta Relaxation Ratio</div>
+          <div class="patent-item"><strong>R4</strong> = Phase &nbsp;·&nbsp; Cross-Channel Phase Sync</div>
+          <div class="patent-item"><strong>R5</strong> = HAI &nbsp;·&nbsp; Hjorth Activity Index</div>
+        </div>
+        <div style="margin-top:20px;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)">
+            <span style="font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:.12em">EEG CHANNELS</span>
+            <span style="font-family:var(--sans);font-size:13px;color:var(--blue);font-weight:500">16 Electrodes</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)">
+            <span style="font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:.12em">INTENT CLASSES</span>
+            <span style="font-family:var(--sans);font-size:13px;color:var(--green);font-weight:500">22 Intents</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)">
+            <span style="font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:.12em">CLASSIFICATION</span>
+            <span style="font-family:var(--sans);font-size:13px;color:var(--amber);font-weight:500">0.5ms latency</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0">
+            <span style="font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:.12em">OUTPUT BUS</span>
+            <span style="font-family:var(--sans);font-size:13px;color:var(--teal);font-weight:500">3-byte BLE 5.2</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARCHITECTURE BLOCKS -->
+  <section class="section" id="architecture">
+    <div class="s-tag rv">02 — BLOCK ARCHITECTURE</div>
+    <h2 class="s-title rv rv1">Chip<br><em>Blocks.</em></h2>
+    <p class="rv rv2" style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.1em;margin-top:-6px">6 functional blocks — mapped from die layout</p>
+
+    <div class="arch-g rv rv2">
+
+      <!-- FFT ENGINE -->
+      <div class="arch-block ab-fft">
+        <div class="ab-icon" style="background:rgba(74,143,232,.08)"><i class="fas fa-wave-square"></i></div>
+        <span class="ab-num">BLOCK 01</span>
+        <div class="ab-name">FFT Engine</div>
+        <div class="ab-desc">High-speed spectral decomposition of 16-channel EEG signals. Extracts frequency-domain features across delta, theta, alpha, beta, and gamma bands.</div>
+        <div class="ab-specs">
+          <div class="ab-spec">16 Parallel Cores</div>
+          <div class="ab-spec">256-point Radix-4 FFT</div>
+          <div class="ab-spec">0.1ms latency per epoch</div>
+          <div class="ab-spec">Pipelined architecture</div>
+        </div>
+        <div class="ab-tags"><span class="ab-tag">Radix-4</span><span class="ab-tag">256-point</span><span class="ab-tag">Parallel</span><span class="ab-tag">0.1ms</span></div>
+      </div>
+
+      <!-- FEATURE ENGINE -->
+      <div class="arch-block ab-feat">
+        <div class="ab-icon" style="background:rgba(159,127,232,.08);border-color:var(--purple);color:var(--purple)"><i class="fas fa-project-diagram"></i></div>
+        <span class="ab-num">BLOCK 02</span>
+        <div class="ab-name">Feature Engine</div>
+        <div class="ab-desc">Computes 31 parallel EEG features including band powers, Hjorth parameters, PLV coherence, and the patented 5-ratio Ratio Calculator for cognitive state discrimination.</div>
+        <div class="ab-specs">
+          <div class="ab-spec" style="--bc:var(--purple)">31 Features in Parallel</div>
+          <div class="ab-spec" style="--bc:var(--purple)">Band Power Calculator (5 bands)</div>
+          <div class="ab-spec" style="--bc:var(--purple)">Hjorth Activity / Mobility / Complexity</div>
+          <div class="ab-spec" style="--bc:var(--purple)">PLV Coherence Unit</div>
+          <div class="ab-spec" style="--bc:var(--purple)">Ratio Calculator R1–R5 (Patent)</div>
+        </div>
+        <div class="ab-tags"><span class="ab-tag">31 Features</span><span class="ab-tag">Hjorth</span><span class="ab-tag">PLV</span><span class="ab-tag">Patent R1-R5</span></div>
+      </div>
+
+      <!-- INPUT BUFFER -->
+      <div class="arch-block ab-input">
+        <div class="ab-icon" style="background:rgba(232,133,58,.08);border-color:var(--orange);color:var(--orange)"><i class="fas fa-sign-in-alt"></i></div>
+        <span class="ab-num">BLOCK 03</span>
+        <div class="ab-name">Input Buffer</div>
+        <div class="ab-desc">Handles raw 16-channel EEG data ingestion from the ADS1299 ADC via high-speed SPI. Double-buffered to allow continuous streaming without data loss during processing.</div>
+        <div class="ab-specs">
+          <div class="ab-spec" style="--bc:var(--orange)">SPI Controller — 20MHz</div>
+          <div class="ab-spec" style="--bc:var(--orange)">16-channel Deserializer</div>
+          <div class="ab-spec" style="--bc:var(--orange)">Double Buffer — zero data loss</div>
+          <div class="ab-spec" style="--bc:var(--orange)">UART_TX / UART_RX debug pins</div>
+        </div>
+        <div class="ab-tags"><span class="ab-tag">SPI 20MHz</span><span class="ab-tag">16ch</span><span class="ab-tag">Double Buffer</span></div>
+      </div>
+
+      <!-- RF INFERENCE ENGINE -->
+      <div class="arch-block ab-rf">
+        <div class="ab-icon" style="background:rgba(62,201,154,.08);border-color:var(--green);color:var(--green)"><i class="fas fa-brain"></i></div>
+        <span class="ab-num">BLOCK 04</span>
+        <div class="ab-name">RF Inference Engine</div>
+        <div class="ab-desc">Hardware-accelerated Random Forest classifier with 150 decision trees stored as parallel Look-Up Tables. Classifies EEG features into 22 intent categories across 3 hierarchical levels.</div>
+        <div class="ab-specs">
+          <div class="ab-spec" style="--bc:var(--green)">150 Decision Trees</div>
+          <div class="ab-spec" style="--bc:var(--green)">Parallel LUT Array</div>
+          <div class="ab-spec" style="--bc:var(--green)">L1: CODE / TEXT / IMAGE</div>
+          <div class="ab-spec" style="--bc:var(--green)">0.5ms classification latency</div>
+          <div class="ab-spec" style="--bc:var(--green)">22 intent output classes</div>
+        </div>
+        <div class="ab-tags"><span class="ab-tag">150 Trees</span><span class="ab-tag">LUT Array</span><span class="ab-tag">22 Intents</span><span class="ab-tag">0.5ms</span></div>
+      </div>
+
+      <!-- OUTPUT CONTROLLER -->
+      <div class="arch-block ab-out">
+        <div class="ab-icon" style="background:rgba(58,201,201,.08);border-color:var(--teal);color:var(--teal)"><i class="fas fa-broadcast-tower"></i></div>
+        <span class="ab-num">BLOCK 05</span>
+        <div class="ab-name">Output Controller</div>
+        <div class="ab-desc">Manages secure transmission of classification results. Transmits only 3-byte intent packets via BLE 5.2 with AES-128 encryption. Raw EEG data is never transmitted — privacy by design.</div>
+        <div class="ab-specs">
+          <div class="ab-spec" style="--bc:var(--teal)">BLE 5.2 Transceiver</div>
+          <div class="ab-spec" style="--bc:var(--teal)">AES-128 Encryption</div>
+          <div class="ab-spec" style="--bc:var(--teal)">3-byte output packet only</div>
+          <div class="ab-spec" style="--bc:var(--teal)">RAW EEG: NEVER SENT</div>
+        </div>
+        <div class="ab-tags"><span class="ab-tag">BLE 5.2</span><span class="ab-tag">AES-128</span><span class="ab-tag">3-byte</span><span class="ab-tag">Privacy</span></div>
+      </div>
+
+      <!-- SRAM -->
+      <div class="arch-block ab-sram" style="grid-column:1/4">
+        <span class="ab-num">BLOCK 06</span>
+        <div class="ab-name" style="margin-bottom:16px">SRAM Memory — 512KB</div>
+        <div class="ab-inner">
+          <div class="sram-banks">
+            <div class="sram-bank"><span class="sram-bank-n">128</span><span class="sram-bank-l">KB RF Weights</span></div>
+            <div class="sram-bank"><span class="sram-bank-n">128</span><span class="sram-bank-l">KB FFT ROM</span></div>
+            <div class="sram-bank"><span class="sram-bank-n">128</span><span class="sram-bank-l">KB Epoch Buffer</span></div>
+            <div class="sram-bank"><span class="sram-bank-n">128</span><span class="sram-bank-l">KB Feature Cache</span></div>
+          </div>
+          <div>
+            <div class="ab-desc" style="margin-bottom:10px">Four independent 128KB SRAM banks with separate read/write ports to enable simultaneous access from FFT, Feature, and Inference engines without bus contention.</div>
+            <div class="ab-tags"><span class="ab-tag">512KB Total</span><span class="ab-tag">4-Bank</span><span class="ab-tag">Multi-Port</span><span class="ab-tag">TSMC SRAM Compiler</span><span class="ab-tag">Single-Cycle Access</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PDN -->
+      <div class="arch-block ab-pdn" style="grid-column:1/4">
+        <span class="ab-num" style="color:var(--amber)">POWER DISTRIBUTION NETWORK</span>
+        <div class="ab-inner">
+          <div class="pdn-rail"><div class="pdn-line pdn-vdd"></div><span class="pdn-label" style="color:var(--blue)">VDD — 3.3V Supply Rails (Top + Bottom ring)</span></div>
+          <div class="pdn-rail"><div class="pdn-line pdn-gnd"></div><span class="pdn-label" style="color:var(--text3)">GND — Ground Plane (Left + Right + Center)</span></div>
+          <div style="font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:.09em">Total: 2mW typical · 3mW peak · On-chip decoupling caps</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SPECS -->
+  <section class="section">
+    <div class="s-tag rv">03 — SPECIFICATIONS</div>
+    <h2 class="s-title rv rv1">Silicon<br><em>Numbers.</em></h2>
+    <div class="specs-g rv rv2">
+      <div class="spec-card" style="--sc:var(--blue)">
+        <span class="sc-label">TRANSISTORS</span>
+        <span class="sc-val" style="color:var(--blue)">12M</span>
+        <span class="sc-unit">28nm CMOS process</span>
+        <div class="sc-bar"><div class="sc-bar-fill" style="width:0%;background:var(--blue)" data-w="85%"></div></div>
+      </div>
+      <div class="spec-card" style="--sc:var(--green)">
+        <span class="sc-label">POWER CONSUMPTION</span>
+        <span class="sc-val" style="color:var(--green)">2<span style="font-size:22px">mW</span></span>
+        <span class="sc-unit">Typical · 3mW peak</span>
+        <div class="sc-bar"><div class="sc-bar-fill" style="width:0%;background:var(--green)" data-w="20%"></div></div>
+      </div>
+      <div class="spec-card" style="--sc:var(--purple)">
+        <span class="sc-label">DIE AREA</span>
+        <span class="sc-val" style="color:var(--purple)">25<span style="font-size:22px">mm²</span></span>
+        <span class="sc-unit">5×5mm · QFN-68 package</span>
+        <div class="sc-bar"><div class="sc-bar-fill" style="width:0%;background:var(--purple)" data-w="45%"></div></div>
+      </div>
+      <div class="spec-card" style="--sc:var(--amber)">
+        <span class="sc-label">CLOCK FREQUENCY</span>
+        <span class="sc-val" style="color:var(--amber)">100<span style="font-size:22px">MHz</span></span>
+        <span class="sc-unit">System clock · 20MHz SPI</span>
+        <div class="sc-bar"><div class="sc-bar-fill" style="width:0%;background:var(--amber)" data-w="70%"></div></div>
+      </div>
+      <div class="spec-card" style="--sc:var(--teal)">
+        <span class="sc-label">SRAM MEMORY</span>
+        <span class="sc-val" style="color:var(--teal)">512<span style="font-size:22px">KB</span></span>
+        <span class="sc-unit">4 banks × 128KB</span>
+        <div class="sc-bar"><div class="sc-bar-fill" style="width:0%;background:var(--teal)" data-w="60%"></div></div>
+      </div>
+      <div class="spec-card" style="--sc:var(--blue)">
+        <span class="sc-label">EEG CHANNELS</span>
+        <span class="sc-val" style="color:var(--blue)">16</span>
+        <span class="sc-unit">Simultaneous · 24-bit ADC</span>
+        <div class="sc-bar"><div class="sc-bar-fill" style="width:0%;background:var(--blue)" data-w="55%"></div></div>
+      </div>
+      <div class="spec-card" style="--sc:var(--green)">
+        <span class="sc-label">TOTAL LATENCY</span>
+        <span class="sc-val" style="color:var(--green)">&lt;1<span style="font-size:22px">ms</span></span>
+        <span class="sc-unit">Input to classification output</span>
+        <div class="sc-bar"><div class="sc-bar-fill" style="width:0%;background:var(--green)" data-w="95%"></div></div>
+      </div>
+      <div class="spec-card" style="--sc:var(--orange)">
+        <span class="sc-label">INTENT CLASSES</span>
+        <span class="sc-val" style="color:var(--orange)">22</span>
+        <span class="sc-unit">3-level hierarchy · 150 trees</span>
+        <div class="sc-bar"><div class="sc-bar-fill" style="width:0%;background:var(--orange)" data-w="75%"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SIGNAL FLOW -->
+  <section class="section">
+    <div class="s-tag rv">04 — SIGNAL PIPELINE</div>
+    <h2 class="s-title rv rv1">Data<br><em>Flow.</em></h2>
+    <div class="flow-g rv rv2">
+      <div class="flow-step">
+        <span class="flow-num">01</span>
+        <span class="flow-icon" style="color:var(--orange)"><i class="fas fa-wave-square"></i></span>
+        <div class="flow-name">EEG Acquisition</div>
+        <div class="flow-detail">16ch ADS1299<br>SPI @ 20MHz<br>24-bit samples<br>250–1000 SPS</div>
+        <div class="lat-bar"><div class="lat-fill" style="width:0%;background:var(--orange)" data-w="15%"></div></div>
+        <div style="font-family:var(--mono);font-size:8px;color:var(--text3);margin-top:5px">~0ms</div>
+        <div class="flow-arrow">→</div>
+      </div>
+      <div class="flow-step">
+        <span class="flow-num">02</span>
+        <span class="flow-icon" style="color:var(--blue)"><i class="fas fa-buffer"></i></span>
+        <div class="flow-name">Input Buffer</div>
+        <div class="flow-detail">Double buffer<br>16ch deserializer<br>Epoch assembly<br>DMA to SRAM</div>
+        <div class="lat-bar"><div class="lat-fill" style="width:0%;background:var(--blue)" data-w="20%"></div></div>
+        <div style="font-family:var(--mono);font-size:8px;color:var(--text3);margin-top:5px">~0.05ms</div>
+        <div class="flow-arrow">→</div>
+      </div>
+      <div class="flow-step">
+        <span class="flow-num">03</span>
+        <span class="flow-icon" style="color:var(--blue)"><i class="fas fa-chart-area"></i></span>
+        <div class="flow-name">FFT Engine</div>
+        <div class="flow-detail">256-pt Radix-4<br>16 parallel cores<br>Spectral power<br>5 band outputs</div>
+        <div class="lat-bar"><div class="lat-fill" style="width:0%;background:var(--blue)" data-w="30%"></div></div>
+        <div style="font-family:var(--mono);font-size:8px;color:var(--text3);margin-top:5px">0.1ms</div>
+        <div class="flow-arrow">→</div>
+      </div>
+      <div class="flow-step">
+        <span class="flow-num">04</span>
+        <span class="flow-icon" style="color:var(--purple)"><i class="fas fa-sliders-h"></i></span>
+        <div class="flow-name">Feature Engine</div>
+        <div class="flow-detail">31 features<br>Hjorth params<br>PLV coherence<br>R1–R5 ratios</div>
+        <div class="lat-bar"><div class="lat-fill" style="width:0%;background:var(--purple)" data-w="25%"></div></div>
+        <div style="font-family:var(--mono);font-size:8px;color:var(--text3);margin-top:5px">0.15ms</div>
+        <div class="flow-arrow">→</div>
+      </div>
+      <div class="flow-step">
+        <span class="flow-num">05</span>
+        <span class="flow-icon" style="color:var(--green)"><i class="fas fa-brain"></i></span>
+        <div class="flow-name">RF Inference</div>
+        <div class="flow-detail">150 trees<br>LUT parallel<br>L1→L2→L3<br>22 classes</div>
+        <div class="lat-bar"><div class="lat-fill" style="width:0%;background:var(--green)" data-w="70%"></div></div>
+        <div style="font-family:var(--mono);font-size:8px;color:var(--text3);margin-top:5px">0.5ms</div>
+        <div class="flow-arrow">→</div>
+      </div>
+      <div class="flow-step">
+        <span class="flow-num">06</span>
+        <span class="flow-icon" style="color:var(--teal)"><i class="fas fa-broadcast-tower"></i></span>
+        <div class="flow-name">BLE Output</div>
+        <div class="flow-detail">3-byte packet<br>AES-128 enc<br>BLE 5.2 TX<br>No raw EEG</div>
+        <div class="lat-bar"><div class="lat-fill" style="width:0%;background:var(--teal)" data-w="10%"></div></div>
+        <div style="font-family:var(--mono);font-size:8px;color:var(--text3);margin-top:5px">~0.1ms</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRIVACY & SECURITY -->
+  <section class="section">
+    <div class="s-tag rv">05 — PRIVACY & SECURITY</div>
+    <h2 class="s-title rv rv1">Security<br><em>Design.</em></h2>
+    <div class="priv-g">
+      <div class="priv-col rv rv2">
+        <div class="priv-item">
+          <div class="priv-icon pi-red"><i class="fas fa-ban"></i></div>
+          <div>
+            <div class="priv-text-h">Raw EEG — Never Transmitted</div>
+            <div class="priv-text-d">The Output Controller is hardware-locked to transmit only 3-byte classification packets. There is no software-accessible register to enable raw EEG streaming — this is a physical design constraint.</div>
+          </div>
+        </div>
+        <div class="priv-item">
+          <div class="priv-icon pi-green"><i class="fas fa-lock"></i></div>
+          <div>
+            <div class="priv-text-h">AES-128 Hardware Encryption</div>
+            <div class="priv-text-d">All BLE transmissions are encrypted at the hardware level using AES-128. Encryption keys are provisioned during manufacturing and cannot be read back via any external interface.</div>
+          </div>
+        </div>
+        <div class="priv-item">
+          <div class="priv-icon pi-blue"><i class="fas fa-microchip"></i></div>
+          <div>
+            <div class="priv-text-h">On-Chip Inference — No Cloud</div>
+            <div class="priv-text-d">All 150-tree Random Forest inference runs entirely within NPU-1. No data leaves the chip for processing. The BCI works fully offline — zero cloud dependency.</div>
+          </div>
+        </div>
+      </div>
+      <div class="priv-col rv rv3">
+        <div class="priv-item">
+          <div class="priv-icon pi-amber"><i class="fas fa-key"></i></div>
+          <div>
+            <div class="priv-text-h">SPI Interface — Input Only</div>
+            <div class="priv-text-d">The SPI_MOSI / SPI_MISO / SPI_CLK pins are configured as write-only from the ADS1299 ADC. No external device can read SRAM contents via SPI.</div>
+          </div>
+        </div>
+        <div class="priv-item">
+          <div class="priv-icon pi-green"><i class="fas fa-shield-alt"></i></div>
+          <div>
+            <div class="priv-text-h">3-Byte Output Protocol</div>
+            <div class="priv-text-d">Output format: [Intent Class (1 byte)] [Confidence (1 byte)] [Checksum (1 byte)]. This minimal packet carries no biometric information beyond the classified intent.</div>
+          </div>
+        </div>
+        <div class="highlight-box">
+          <span class="highlight-box-tag">PRIVACY BY DESIGN</span>
+          <p>NPU-1 processes ~50,000 raw EEG samples per second internally — but transmits only ~10 intent packets per second. A 5,000× compression ratio ensures your brain data stays on-chip.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FABRICATION ROADMAP -->
+  <section class="section">
+    <div class="s-tag rv">06 — FABRICATION ROADMAP</div>
+    <h2 class="s-title rv rv1">Path to<br><em>Silicon.</em></h2>
+    <div class="road-g rv rv2">
+      <div class="road-card">
+        <span class="road-phase" style="color:var(--green)">PHASE 01 · COMPLETE</span>
+        <div class="road-title">Concept Architecture</div>
+        <div class="road-desc">Block-level architecture designed. Signal flow verified via software simulation. All 6 blocks specified with interface definitions.</div>
+        <span class="road-status" style="color:var(--green);border:1px solid rgba(62,201,154,.22);background:rgba(62,201,154,.06)">✓ Done</span>
+      </div>
+      <div class="road-card">
+        <span class="road-phase" style="color:var(--blue)">PHASE 02 · NEXT</span>
+        <div class="road-title">FPGA Prototype</div>
+        <div class="road-desc">Implement NPU-1 architecture on Xilinx Artix-7 FPGA. Validate FFT core, feature engine, and RF inference at 100MHz clock. Real EEG data testing.</div>
+        <span class="road-status" style="color:var(--blue);border:1px solid rgba(74,143,232,.22);background:rgba(74,143,232,.06)">→ Planned</span>
+      </div>
+      <div class="road-card">
+        <span class="road-phase" style="color:var(--amber)">PHASE 03</span>
+        <div class="road-title">Efabless Shuttle</div>
+        <div class="road-desc">Submit RTL via Efabless Open MPW shuttle program using Sky130 PDK. First silicon tape-out. Functional verification on physical die.</div>
+        <span class="road-status" style="color:var(--amber);border:1px solid rgba(245,190,90,.22);background:rgba(245,190,90,.06)">⟳ Future</span>
+      </div>
+      <div class="road-card">
+        <span class="road-phase" style="color:var(--purple)">PHASE 04</span>
+        <div class="road-title">TSMC 28nm via Europractice</div>
+        <div class="road-desc">Full ASIC tape-out on TSMC 28nm CMOS via Europractice academic program. Target: 2mW, 5×5mm die, QFN-68 package. Production-ready NPU-1 v1.0.</div>
+        <span class="road-status" style="color:var(--purple);border:1px solid rgba(159,127,232,.22);background:rgba(159,127,232,.06)">⟳ Target</span>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- FOOTER -->
+<div class="dash-footer">
+  <div class="df-l">NPU-1 v1.0 · <span>SynapLink BCI</span> · Padala Durga Prasadu · © 2026</div>
+  <div class="df-r">Part of <a href="index.html" style="color:var(--blue)">prasad.dev</a> portfolio</div>
+</div>
+
+<script>
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)} });
+},{threshold:.08,rootMargin:'0px 0px -24px 0px'});
+document.querySelectorAll('.rv').forEach(el => io.observe(el));
+
+const bIO = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      e.currentTarget.querySelectorAll('[data-w]').forEach(b => {
+        setTimeout(()=>{ b.style.width = b.dataset.w },100);
+      });
+      bIO.unobserve(e.currentTarget);
+    }
+  });
+},{threshold:.15});
+document.querySelectorAll('.specs-g,.flow-g').forEach(el => bIO.observe(el));
+</script>
+</body>
+</html>
