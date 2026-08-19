@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
   <meta name="description" content="Padala Durga Prasadu — AI/ML Engineer, BCI Researcher, B.Tech CSE (AI/ML) graduate.">
   <meta name="author" content="Padala Durga Prasadu">
   <meta property="og:title" content="Padala Durga Prasadu — AI/ML Engineer & BCI Researcher">
@@ -19,14 +19,16 @@
 </head>
 <body>
 
+  <!-- Custom Cursor for Desktop -->
   <div id="cur"></div>
   <div id="cur-r"></div>
 
   <!-- NAV -->
   <nav id="nav">
-    <a href="#hero" class="nav-logo">
+    <a href="#hero" class="nav-logo" aria-label="Home">
       <span class="nav-logo-text">D<span>.</span>P</span>
     </a>
+
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
       <li><a href="#skills">Skills</a></li>
@@ -36,24 +38,58 @@
       <li><a href="#education">Education</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
+
     <div class="nav-right">
       <a href="https://github.com/padaladurgaprasadu" target="_blank" rel="noopener" class="nav-social" aria-label="GitHub"><i class="fab fa-github"></i></a>
       <a href="https://in.linkedin.com/in/prasadpadala" target="_blank" rel="noopener" class="nav-social" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
       <a href="P.Prasadu.pdf" class="nav-cv" target="_blank" rel="noopener">Resume ↗</a>
+      
+      <!-- Mobile Hamburger Button -->
+      <button id="navToggle" class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="nt-line"></span>
+        <span class="nt-line"></span>
+        <span class="nt-line"></span>
+      </button>
     </div>
   </nav>
+
+  <!-- MOBILE NAV DRAWER -->
+  <div id="navDrawer" class="nav-drawer" aria-hidden="true">
+    <div class="nav-drawer-backdrop" id="navBackdrop"></div>
+    <div class="nav-drawer-content">
+      <ul class="nav-drawer-links">
+        <li><a href="#about" class="nav-drawer-link"><span class="nd-num">01</span> About</a></li>
+        <li><a href="#skills" class="nav-drawer-link"><span class="nd-num">02</span> Skills</a></li>
+        <li><a href="#projects" class="nav-drawer-link"><span class="nd-num">03</span> Projects</a></li>
+        <li><a href="#leetcode" class="nav-drawer-link"><span class="nd-num">04</span> LeetCode</a></li>
+        <li><a href="#certifications" class="nav-drawer-link"><span class="nd-num">05</span> Certifications</a></li>
+        <li><a href="#education" class="nav-drawer-link"><span class="nd-num">06</span> Education</a></li>
+        <li><a href="#contact" class="nav-drawer-link"><span class="nd-num">07</span> Contact</a></li>
+      </ul>
+      <div class="nav-drawer-bottom">
+        <div class="nav-drawer-socials">
+          <a href="https://github.com/padaladurgaprasadu" target="_blank" rel="noopener" class="nd-social" aria-label="GitHub"><i class="fab fa-github"></i></a>
+          <a href="https://in.linkedin.com/in/prasadpadala" target="_blank" rel="noopener" class="nd-social" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="https://leetcode.com/u/PadalaDurgaPrasad/" target="_blank" rel="noopener" class="nd-social" aria-label="LeetCode"><i class="fas fa-code"></i></a>
+        </div>
+        <a href="P.Prasadu.pdf" class="nav-cv nd-cv" target="_blank" rel="noopener">Resume ↗</a>
+      </div>
+    </div>
+  </div>
 
   <!-- HERO -->
   <section id="hero">
     <div class="h-bg"></div>
     <div class="h-grid"></div>
 
+    <!-- Decorative monogram (no photo) -->
     <div class="h-monogram">
       <span class="h-monogram-inner">DP</span>
       <div class="h-mono-ring"></div>
       <div class="h-mono-ring2"></div>
     </div>
 
+    <!-- SVG decorative rings -->
     <div class="h-deco">
       <svg width="360" height="360" viewBox="0 0 360 360" fill="none" xmlns="http://www.w3.org/2000/svg">
         <circle cx="180" cy="180" r="179" stroke="rgba(62,201,154,0.07)" stroke-width="1"/>
@@ -70,14 +106,17 @@
 
     <div class="h-content">
       <div class="h-tag">AI/ML Engineer &nbsp;·&nbsp; BCI Researcher &nbsp;·&nbsp; Andhra Pradesh, India</div>
+
       <h1 class="h-name">
         <span class="h-nl">Padala</span>
         <span class="h-nl">Durga Prasadu</span>
       </h1>
+
       <p class="h-sub">
         Building <em>brain-computer interfaces</em> &amp; intelligent systems.<br>
         B.Tech CSE (AI/ML) &middot; IEEE ICIRCA-2025.
       </p>
+
       <div class="h-acts">
         <a href="#projects" class="btn-p">View Projects</a>
         <a href="#contact"  class="btn-g">Get In Touch</a>
@@ -86,11 +125,25 @@
 
     <div class="h-bottom">
       <div class="h-stats">
-        <div class="h-stat"><span class="h-stat-n">22</span><span class="h-stat-l">EEG Intents</span></div>
+        <div class="h-stat">
+          <span class="h-stat-n">22</span>
+          <span class="h-stat-l">EEG Intents</span>
+        </div>
         <div class="h-stat-div"></div>
-        <div class="h-stat"><span class="h-stat-n">IEEE</span><span class="h-stat-l">Published</span></div>
+        <div class="h-stat">
+          <span class="h-stat-n">7.58</span>
+          <span class="h-stat-l">CGPA / 10</span>
+        </div>
         <div class="h-stat-div"></div>
-        <div class="h-stat"><span class="h-stat-n">8</span><span class="h-stat-l">Projects</span></div>
+        <div class="h-stat">
+          <span class="h-stat-n">IEEE</span>
+          <span class="h-stat-l">Published</span>
+        </div>
+        <div class="h-stat-div"></div>
+        <div class="h-stat">
+          <span class="h-stat-n">9</span>
+          <span class="h-stat-l">Projects</span>
+        </div>
       </div>
       <div class="h-scroll">
         <div class="h-scroll-l"></div>
@@ -103,15 +156,17 @@
   <section id="about" class="sp">
     <div class="s-tag reveal">01 — ABOUT</div>
     <h2 class="s-title reveal rd1">Researcher.<br><em>Builder.</em> Dreamer.</h2>
+
     <div class="about-g">
       <div class="about-col reveal rd2">
         <p>I'm <strong>Padala Durga Prasadu</strong>, a recent B.Tech graduate in Computer Science (AI/ML) from Kalasalingam Academy of Research and Education, Tamil Nadu. My work sits at the intersection of <strong>neuroscience and artificial intelligence</strong> — specifically, building accessible brain-computer interface systems.</p>
         <p>My flagship project, <strong>SynapLink</strong>, is a hierarchical EEG intent-recognition system with a custom NPU-1 chip concept, targeting 85mW power consumption. I'm also the creator of <strong>CropIQ</strong> — a satellite imagery crop recommendation system published at IEEE ICIRCA-2025.</p>
         <div class="drows">
-          <div class="dr"><span class="dr-lbl">DEGREE</span><span class="dr-val">B.Tech CSE (AI/ML)</span></div>
+          <div class="dr"><span class="dr-lbl">DEGREE</span>   <span class="dr-val">B.Tech CSE (AI/ML)</span></div>
           <div class="dr"><span class="dr-lbl">UNIVERSITY</span><span class="dr-val">KARE, Tamil Nadu</span></div>
         </div>
       </div>
+
       <div class="about-quote reveal rd3">
         <blockquote>"The brain is the most complex interface ever built. My goal is to make it speak to machines — and make machines listen."</blockquote>
         <cite>— Durga Prasadu, on SynapLink</cite>
@@ -144,7 +199,6 @@
     <h2 class="s-title reveal rd1">Selected<br><em>Work.</em></h2>
     <div class="proj-l">
 
-      <!-- 01 SynapLink -->
       <div class="p-item reveal">
         <span class="p-num">01</span>
         <div class="p-info">
@@ -153,12 +207,13 @@
         </div>
         <div class="p-right">
           <div class="p-tags"><span class="p-tag">AI/ML</span><span class="p-tag">Embedded</span><span class="p-tag">Hardware</span></div>
-          <a href="https://synaplink-bci.onrender.com/" target="_blank" rel="noopener" class="p-live">↗ Live</a>
-          <span class="st st-on">Active</span>
+          <div class="p-actions">
+            <a href="https://synaplink-bci.onrender.com/" target="_blank" rel="noopener" class="p-live" title="Live Demo">↗ Live</a>
+            <span class="st st-on">Active</span>
+          </div>
         </div>
       </div>
 
-      <!-- 02 CropIQ -->
       <div class="p-item reveal">
         <span class="p-num">02</span>
         <div class="p-info">
@@ -167,12 +222,14 @@
         </div>
         <div class="p-right">
           <div class="p-tags"><span class="p-tag">CV</span><span class="p-tag">Android</span><span class="p-tag">Research</span></div>
-          <a href="cropiq.html" class="p-live">↗ Dashboard</a>
-          <span class="st st-done">Complete</span>
+          <div class="p-actions">
+            <a href="cropiq.html" class="p-live" title="View CropIQ Dashboard">↗ Dashboard</a>
+            <a href="CropIQ.pdf" download class="p-dl" title="Download Project"><i class="fas fa-download"></i></a>
+            <span class="st st-done">Complete</span>
+          </div>
         </div>
       </div>
 
-      <!-- 03 IEEE Publication -->
       <div class="p-item reveal">
         <span class="p-num">03</span>
         <div class="p-info">
@@ -181,26 +238,27 @@
         </div>
         <div class="p-right">
           <div class="p-tags"><span class="p-tag">Research</span><span class="p-tag">IEEE</span></div>
-          <a href="Cropiq Research Paper.pdf" download class="p-dl" title="Download Paper"><i class="fas fa-download"></i></a>
-          <span class="st st-pub">Published</span>
+          <div class="p-actions">
+            <a href="Cropiq Research Paper.pdf" download class="p-dl" title="Download Paper"><i class="fas fa-download"></i></a>
+            <span class="st st-pub">Published</span>
+          </div>
         </div>
       </div>
 
-      <!-- 04 NPU-1 — DASHBOARD LINK ADDED -->
       <div class="p-item reveal">
         <span class="p-num">04</span>
         <div class="p-info">
           <div class="p-name">NPU-1 Chip Architecture</div>
-          <div class="p-meta">Custom Neural Processing Unit &nbsp;&middot;&nbsp; <span>28nm CMOS · 12M Transistors · 2mW · 5×5mm Die</span></div>
+          <div class="p-meta">Custom Neural Processing Unit &nbsp;&middot;&nbsp; <span>85mW · 9-Block · QFN-68 · 12×12mm</span></div>
         </div>
         <div class="p-right">
           <div class="p-tags"><span class="p-tag">Hardware</span><span class="p-tag">VLSI</span></div>
-          <a href="npu1.html" class="p-live">↗ Dashboard</a>
-          <span class="st st-on">Design</span>
+          <div class="p-actions">
+            <span class="st st-on">Design</span>
+          </div>
         </div>
       </div>
 
-      <!-- 05 CropIQ Android -->
       <div class="p-item reveal">
         <span class="p-num">05</span>
         <div class="p-info">
@@ -209,11 +267,12 @@
         </div>
         <div class="p-right">
           <div class="p-tags"><span class="p-tag">Android</span><span class="p-tag">React</span></div>
-          <span class="st st-done">Complete</span>
+          <div class="p-actions">
+            <span class="st st-done">Complete</span>
+          </div>
         </div>
       </div>
 
-      <!-- 06 E-commerce -->
       <div class="p-item reveal">
         <span class="p-num">06</span>
         <div class="p-info">
@@ -222,11 +281,12 @@
         </div>
         <div class="p-right">
           <div class="p-tags"><span class="p-tag">Web</span><span class="p-tag">Client</span></div>
-          <span class="st st-done">Delivered</span>
+          <div class="p-actions">
+            <span class="st st-done">Delivered</span>
+          </div>
         </div>
       </div>
 
-      <!-- 07 Portfolio -->
       <div class="p-item reveal">
         <span class="p-num">07</span>
         <div class="p-info">
@@ -235,7 +295,9 @@
         </div>
         <div class="p-right">
           <div class="p-tags"><span class="p-tag">Web</span><span class="p-tag">Design</span></div>
-          <span class="st st-done">Live</span>
+          <div class="p-actions">
+            <span class="st st-done">Live</span>
+          </div>
         </div>
       </div>
 
@@ -247,9 +309,11 @@
     <div class="s-tag reveal">04 — CODING PROFILE</div>
     <h2 class="s-title reveal rd1">LeetCode<br><em>Dashboard.</em></h2>
     <p class="reveal rd2" style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.12em;margin-top:-6px">Live data · Auto-updates on every visit</p>
+    
     <div id="lcWrap" class="lc-wrap reveal rd3">
       <div class="lc-loading">⟳ &nbsp;Fetching live LeetCode stats...</div>
     </div>
+    
     <a href="https://leetcode.com/u/PadalaDurgaPrasad/" target="_blank" rel="noopener" class="lc-profile-link reveal rd4">
       View Full LeetCode Profile ↗
     </a>
@@ -290,6 +354,7 @@
       <div class="s-tag reveal">07 — CONTACT</div>
       <h2 class="s-title reveal rd1">Let's build<br><em>something.</em></h2>
       <p class="reveal rd2" style="font-family:var(--sans);font-size:13px;color:var(--text2);line-height:1.9;max-width:440px;margin-top:8px">Open to research collaborations, internship opportunities, and conversations about BCI, AI systems, or German university admissions.</p>
+
       <div class="c-links">
         <a href="mailto:padalaprasad94@gmail.com" class="c-link reveal">
           <div class="c-ll"><span class="c-icon"><i class="fas fa-envelope"></i> EMAIL</span><span class="c-lbl">padalaprasad94@gmail.com</span></div>
@@ -325,8 +390,8 @@
     <div class="f-social">
       <a href="https://github.com/padaladurgaprasadu"   target="_blank" rel="noopener" aria-label="GitHub"   class="f-icon"><i class="fab fa-github"></i></a>
       <a href="https://in.linkedin.com/in/prasadpadala" target="_blank" rel="noopener" aria-label="LinkedIn" class="f-icon"><i class="fab fa-linkedin-in"></i></a>
-      <a href="https://leetcode.com/u/PadalaDurgaPrasad/"    target="_blank" rel="noopener" aria-label="LeetCode" class="f-icon"><i class="fas fa-code"></i></a>
-      <a href="mailto:padalaprasad94@gmail.com"                         aria-label="Email"    class="f-icon"><i class="fas fa-envelope"></i></a>
+      <a href="https://leetcode.com/u/PadalaDurgaPrasad/" target="_blank" rel="noopener" aria-label="LeetCode" class="f-icon"><i class="fas fa-code"></i></a>
+      <a href="mailto:padalaprasad94@gmail.com"         aria-label="Email"    class="f-icon"><i class="fas fa-envelope"></i></a>
     </div>
     <div class="f-right-group">
       <div class="f-r">Designed with intention · Built for impact</div>
